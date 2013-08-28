@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs = require("fs");
 var host = "127.0.0.1";
 var port = 8085;
