@@ -5,3 +5,7 @@ styles/console.css
 styles/main_flymake.css
 node_modules
 old
+scripts/console.js
+scripts/veeps-rv-1.coffee scripts/veeps-rv-1.js
+scripts/veeps-rv-1.js
+scripts/veeps-rv-1.coffee
