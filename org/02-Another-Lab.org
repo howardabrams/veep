@@ -1,0 +1,60 @@
+#+TITLE:  More Lab Work
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-25 Sun]
+#+TAGS:   veeps coffeescript
+
+Let's try another lab mission. The wheels on most RVs are geared
+weirdly, and use more energy going backwards than forwards. Each RV
+has only so much energy before it needs to dock and recharge.
+
+The following console connects to an RV with 30 /decabrams/ of energy
+for the wheel engines. Moving forward takes about 1 decabram. Why yes,
+this does make the math easy. Ha ha!
+
+See how far away you can move the RV with that limited amount of energy.
+The =rv.left= and =rv.right= take a number of degrees to turn the
+RV. So saying =rv.left(90)= will tell the RV to turn to the left
+90°. Make sense?
+
+Let's have the RV drive in the largest square we can. The =d= is what
+we call a /variable/. We can set it to a number and then reuse
+it. Change the =_= in this console to a number, but not too large that
+the rover doesn't make it back.
+
+#+BEGIN_SRC js
+  rv.connect("1-875E-65297D640A2D")
+
+  d = _
+  rv.forward(d)
+  rv.left(90)
+  rv.forward(d)
+  rv.left(90)
+  rv.forward(d)
+  rv.left(90)
+  rv.forward(d)
+
+  rv.dock()
+#+END_SRC
+
+To see your work and the path the RV took, click the /Map/ tab.
+
+[[file:03-Lab-Programming.org][Next]]
+
+#+BEGIN_HTML
+  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-ui.js"></script>
+  <script src="scripts/lib/pen_min.js"></script>
+  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+
+  <script src="scripts/console.coffee" type="text/coffeescript"></script>
+  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+#+END_HTML
+
+#+PROPERTY: tangle no
+#+PROPERTY: comments org
+

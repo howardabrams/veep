@@ -1,0 +1,73 @@
+#+TITLE:  First Mission
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-05 Mon][2013-08-05 Mon]
+#+TAGS:   veeps coffeescript
+
+#+BEGIN_HTML
+<img src="images/m.png" style="float:right; height: 350px"/>
+#+END_HTML
+
+Hi, I'm M, and I'm glad to see I've got some help. I've been working
+hard to make it easy to instruct the RVs. Each has a window into its
+mind where you can tell it what to do. We call the window a /console/
+and the commands we want it to do is /code/ and a mission to
+accomplish is a /program/. Go it?
+
+Good. I see this will be easy.
+
+The first mission is pretty simple. We'll have the RV move out from
+its base station 10 meters, and then drive backwards 10 meters
+back. This is just to get your feet wet.
+
+Here is a console, and I've already typed the code that makes up the
+mission. Pretty simple since I have a commands called =forward= and
+=backward=:
+
+#+BEGIN_HTML
+<div style="clear:both"></div>
+#+END_HTML
+
+#+BEGIN_SRC js  
+  rv.connect("0-875E-65297D640A2D")
+  rv.forward(4)
+  rv.backward(4)
+  rv.dock()
+#+END_SRC
+
+#+RESULTS:
+
+First, you'll notice that everything starts with =rv=. That shows you what I
+made, and I'm pretty proud of it. The first command, =connect= links
+your console with a particular RV. Don't worry about the garbely-gook
+in the quotes, that is just the key to identify a particular RV. That
+one is in a particular lab with a nice, clear floor.
+
+We move the RV forward 4 meters, and then backwards 4 meters. Once it
+is done, we have it attach itself back to the base station. If it
+doesn't have that command, it can be communicated and becomes lost.
+
+In the lab, it isn't so much of a problem, since the technicians
+there, we just pick it up and re-connect it. However, if your RV is
+roving around a dustball around Alpha Centaurii, we have to send a
+new ship through the right worm hole... at least, until the
+government agencies decide that worm hold travel is safe for humans.
+
+[[file:02-Another-Lab.html][Next]]
+
+#+BEGIN_HTML
+  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-ui.js"></script>
+  <script src="scripts/lib/pen_min.js"></script>
+  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+
+  <script src="scripts/console.coffee" type="text/coffeescript"></script>
+  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+#+END_HTML
+
+#+PROPERTY: tangle no
+#+PROPERTY: comments org

@@ -1,0 +1,27 @@
+#+TITLE:  Virtual Exoplanet Exploration Program
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@gmail.com
+#+DATE:   [2013-07-09 Tue]
+#+TAGS:   kids coffee javascript
+
+This game is solved by entering the right commands into a wheeled
+rover to accomplish missions for exploring virtual worlds. That's
+right, the players learn to program while playing the game.
+
+* General Thoughts
+
+  Evaluating the code that is upload in a safe manner is critical for
+  this project. Otherwise, each /mission/ would include a /wrapper/
+  of functions and support, and would be evaluated on the user's
+  computer.
+
+  I like the idea of a contained execution of
+  JavaScript/CoffeeScript, but I may want to write it in Python just
+  to level up with it, and then convert it later.
+
+* Function Commands
+
+* Simple Rover
+
+  The program that is uploaded needs to return an object that we can
+  then call functions.

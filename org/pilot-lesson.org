@@ -1,0 +1,206 @@
+#+TITLE:  First Mission
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-05 Mon][2013-08-05 Mon]
+#+TAGS:   veeps coffeescript
+
+#+BEGIN_HTML
+<img src="images/m.png" style="float:right; height: 350px"/>
+#+END_HTML
+
+Hi, I'm M, and I'm glad to see I've got some help. I've been working
+hard to make it easy to instruct the RVs. Each has a window into its
+mind where you can tell it what to do. We call the window a /console/
+and the commands we want it to do is /code/ and a mission to
+accomplish is a /program/. Go it?
+
+Good. I see this will be easy.
+
+The first mission is pretty simple. We'll have the RV move out from
+its base station 10 meters, and then drive backwards 10 meters
+back. This is just to get your feet wet.
+
+Here is a console, and I've already typed the code that makes up the
+mission. Pretty simple since I have a commands called =forward= and
+=backward=:
+
+#+BEGIN_HTML
+<div style="clear:both"></div>
+#+END_HTML
+
+#+BEGIN_SRC js  
+  rv.connect("0-875E-65297D640A2D")
+  rv.forward(4)
+  rv.backward(4)
+  rv.dock()
+#+END_SRC
+
+#+RESULTS:
+
+First, you'll notice that everything starts with =rv=. That shows you what I
+made, and I'm pretty proud of it. The first command, =connect= links
+your console with a particular RV. Don't worry about the garbely-gook
+in the quotes, that is just the key to identify a particular RV. That
+one is in a particular lab with a nice, clear floor.
+
+We move the RV forward 4 meters, and then backwards 4 meters. Once it
+is done, we have it attach itself back to the base station. If it
+doesn't have that command, it can be communicated and becomes lost.
+
+In the lab, it isn't so much of a problem, since the technicians
+there, we just pick it up and re-connect it. However, if your RV is
+roving around a dustball around Alpha Centaurii, we have to send a
+new ship through the right worm hole... at least, until the
+government agencies decide that worm hold travel is safe for humans.
+
+--------
+
+Let's try another lab mission. The wheels on most RVs are geared
+weirdly, and use more energy going backwards than forwards. Each RV
+has only so much energy before it needs to dock and recharge.
+
+This console connects to an RV with 30 milliblahs of energy. Moving
+forward takes 1 of these. Yeah, we built these robots to make the
+math easy. Ha ha!
+
+See how far away you can move the RV with that limited amount of energy.
+The =rv.left= and =rv.right= take a number of degrees to turn the
+RV. So saying =rv.left(90)= will tell the RV to turn to the left
+90°. Make sense?
+
+#+BEGIN_SRC js
+  rv.connect("1-875E-65297D640A2D");
+  rv.forward(10)
+  rv.left(180)
+  rv.forward(10)
+  rv.dock()
+#+END_SRC
+
+The easiest option is to go forward 30 meters and turn around 180°,
+but what would be the fewest number of turns without following in the
+same steps? Sure, a triangle would work. What would be the best
+triangle path that got your the furthest away?
+
+Here is the console to a lab RV with my best solution:
+
+#+BEGIN_SRC js
+  rv.connect("2-875E-65297D640A2D");
+
+  rv.forward(10)
+  rv.left(90)
+  rv.forward(1)
+  rv.left(150)
+  rv.forward(11)
+
+  rv.dock()
+#+END_SRC
+
+------
+
+Here is a console to another RV in a lab, but this warehouse isn't
+all nice, smooth cement. This one is partly covered in loose
+sand. This means, that the RV slips, so while you may say, move
+forward 1 meter, it doesn't really travel that far.
+
+This is important when trying to make sure you have enough energy to
+get back to the base station. Let's start by moving forward 14
+meters, turn completely around and move back 14 meters. How far do
+you think we will have traveled?
+
+#+BEGIN_SRC js
+  rv.connect("3-875E-65297D640A2D");
+  rv.forward(14);
+  rv.left(180);
+  rv.forward(14);
+  return rv.dock();
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Re-Docked.
+{ robot: { name: 'Itsy', energy: 30 },
+  world: { name: 'Sandy Lab', terrain: [Function] },
+  x: 0.5,
+  y: 1.3164518303590556e-15,
+  z: 0,
+  direction: 180,
+  distance: 0.5,
+  maxdist: 11.25,
+  traveled: 22,
+  energy_used: 28,
+  energy: 2,
+  log: 
+   [ 'Connecting to Mission: 2',
+     'Rover: Itsy (Energy: 30)',
+     'Current distance: 11.25 m ( 11.25 ,  0.00 )',
+     'Current distance: 0.50 m ( 0.50 ,  0.00 )' ],
+  log2: 
+   [ 'Traveled: 1 m - Energy: 29 ( 1.00 , 0.00 )',
+     'Traveled: 2 m - Energy: 28 ( 2.00 , 0.00 )',
+     'Traveled: 3 m - Energy: 27 ( 3.00 , 0.00 )',
+     'Traveled: 3.75 m - Energy: 26 ( 3.75 , 0.00 )',
+     'Traveled: 4.5 m - Energy: 25 ( 4.50 , 0.00 )',
+     'Traveled: 5.25 m - Energy: 24 ( 5.25 , 0.00 )',
+     'Traveled: 6 m - Energy: 23 ( 6.00 , 0.00 )',
+     'Traveled: 6.75 m - Energy: 22 ( 6.75 , 0.00 )',
+     'Traveled: 7.5 m - Energy: 21 ( 7.50 , 0.00 )',
+     'Traveled: 8.25 m - Energy: 20 ( 8.25 , 0.00 )',
+     'Traveled: 9 m - Energy: 19 ( 9.00 , 0.00 )',
+     'Traveled: 9.75 m - Energy: 18 ( 9.75 , 0.00 )',
+     'Traveled: 10.5 m - Energy: 17 ( 10.50 , 0.00 )',
+     'Traveled: 11.25 m - Energy: 16 ( 11.25 , 0.00 )',
+     'Turned left 180 ° - Current: 180',
+     'Traveled: 12 m - Energy: 15 ( 10.50 , 0.00 )',
+     'Traveled: 12.75 m - Energy: 14 ( 9.75 , 0.00 )',
+     'Traveled: 13.5 m - Energy: 13 ( 9.00 , 0.00 )',
+     'Traveled: 14.25 m - Energy: 12 ( 8.25 , 0.00 )',
+     'Traveled: 15 m - Energy: 11 ( 7.50 , 0.00 )',
+     'Traveled: 15.75 m - Energy: 10 ( 6.75 , 0.00 )',
+     'Traveled: 16.5 m - Energy: 9 ( 6.00 , 0.00 )',
+     'Traveled: 17.25 m - Energy: 8 ( 5.25 , 0.00 )',
+     'Traveled: 18 m - Energy: 7 ( 4.50 , 0.00 )',
+     'Traveled: 18.75 m - Energy: 6 ( 3.75 , 0.00 )',
+     'Traveled: 19.5 m - Energy: 5 ( 3.00 , 0.00 )',
+     'Traveled: 20.25 m - Energy: 4 ( 2.25 , 0.00 )',
+     'Traveled: 21 m - Energy: 3 ( 1.50 , 0.00 )',
+     'Traveled: 22 m - Energy: 2 ( 0.50 , 0.00 )' ] }
+#+end_example
+
+
+#+NAME: Local Access
+#+BEGIN_HTML
+  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-ui.js"></script>
+  <script src="scripts/lib/pen_min.js"></script>
+  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+#+END_HTML
+
+#+NAME: Remote Access
+#+BEGIN_EXAMPLE
+  <link href="http://code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="http://underscorejs.org/underscore-min.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="http://jashkenas.github.com/coffee-script/extras/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+#+END_EXAMPLE
+
+#+NAME: CoffeeScript Compiler ... Load JavaScript
+#+BEGIN_EXAMPLE
+  <script src="scripts/console.js" type="text/javascript"></script>
+  <script src="scripts/veeps-rv-1.js" type="text/javascript"></script>
+#+END_EXAMPLE
+
+#+NAME: Use CoffeeScript
+#+BEGIN_HTML
+  <script src="scripts/console.coffee" type="text/coffeescript"></script>
+  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+#+END_HTML
+
+#+PROPERTY: tangle no
+#+PROPERTY: comments org

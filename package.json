@@ -1,0 +1,24 @@
+{
+  "name": "veep",
+  "version": "0.5.0",
+  "description": "Web server for the VEEP game project",
+  "main": "app.js",
+  "dependencies" : {
+      "express" : ">= 3.3.6"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/howardabrams/veep"
+  },
+  "keywords": [
+    "game",
+    "education"
+  ],
+  "author": "Howard Abrams",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/howardabrams/veep/issues"
+  }
+}

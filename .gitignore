@@ -1,0 +1,7 @@
+*.html
+*~
+scripts/console.coffee
+styles/console.css
+styles/main_flymake.css
+node_modules
+old

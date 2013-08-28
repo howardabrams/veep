@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: calibri, sans-serif;
+    font-size: larger;
+    line-height: 150%;
+    margin: 40px;
+}
+
+p {
+    max-width: 1000px;
+}
+
+i {
+    color: #FDC998;
+}
+
+a {
+    font-size: 24px;
+    color: orange;
+}
+
+h1, h2, h3 {
+    font-family: eurostile, verdana, sans-serif;
+}
+
+pre.src {
+    font-family: consolas, source code pro, anonyomous pro, monospace;
+}
+
+code {
+    font-family: consolas, source code pro, anonyomous pro, monospace;
+    font-size: larger;
+    color: aqua;
+}
+
+#postamble {
+    display: none;
+}

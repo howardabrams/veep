@@ -1,0 +1,369 @@
+#+TITLE:  CoffeeScript Console Code
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@gmail.com
+#+DATE:   [2013-07-04 Thu]
+#+TAGS:   coffeescript
+
+* Overview
+
+  I believe I could teach CoffeeScript in an /interactive browser/
+  with stand-alone files (no need for a server, or anything special).
+
+  I could write JavaScript and CoffeeScript lessons in an org-mode
+  file, but create a /shippable/ HTML file (perhaps as a web
+  archive). The process would be little more than /publishing/ and a
+  JavaScript file would do the magic.
+
+
+  We start with Org mode files and use yasnippet to insert HTML with
+  links to JavaScript code.
+
+* Snippet for Notebooks
+
+  First, to do CoffeeScript in the browser, do:
+
+#+BEGIN_SRC html :tangle no
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script src="http://jashkenas.github.com/coffee-script/extras/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <script src="script/console.coffee" type="text/coffeescript"></script>
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+#+END_SRC
+
+* Cell Evaluation
+
+  We can have three "types":
+
+   * results
+   * console.log? Output from function?
+   * variables
+
+ Easy to evaluate with JavaScript, but how to do that with [[http://coffeescript.org/documentation/docs/browser.html][CoffeeScript]]?
+
+** Log Output
+
+#+BEGIN_SRC coffee
+  prefixCode = '''
+  _console_log = []
+  _debug_log = []
+  
+  console = {
+    log: (args...) ->
+      _console_log.push( args.join(" ") )
+    debug: (args...) ->
+      _debug_log.push( args.join(" ") )
+  }
+  
+  _execution = ->
+  '''
+  
+  postfixCode = '''
+  _results = _execution()
+  {
+     results: _results[0]
+     log: _console_log,
+     debug: _results[1]
+  }'''
+#+END_SRC
+
+** Enlarge Text Area
+
+    While the textarea in Safari and some browsers can be
+    automatically resized, we can't count on it.
+
+#+BEGIN_SRC coffee
+  enlargeArea = ->
+    parent = $(this).parents(".code")
+    height = $("textarea", parent).height() + 20   # Assuming font is 17px
+    $("textarea", parent).css("height", height + "px")
+#+END_SRC
+
+** Text Formatting
+
+   Need to be able to take some JavaScript object and render it
+   helpfully. My thought is a recursive function where:
+
+   - Objects - Tables
+   - Arrays  - Lists
+   - Simple Types - Rendered as strings
+
+#+BEGIN_SRC coffee
+  render_list = (e) ->
+          "<li>" + render(e) + "</li>"
+  render_row = (k, v) ->
+          "<tr><th>" + render(v).replace(/_/g, " ") + ":</th><td>" + render(k) + "</td></tr>"
+  
+  render = (o) ->
+          console.log("Rendering:", typeof o, o)
+          if _.isArray(o)
+                  "<ul>" + _.map(o, render_list).join("") + "</ul>"
+          else if _.isObject(o)
+                  "<table>" + _.map(o, render_row).join("") + "</table>"
+          else
+                  "<code>" + o + "</code>"
+#+END_SRC
+
+** Results
+
+   Displaying the results is a matter of accepting objects for the
+   different tabs and after converting those to strings (using the
+   =render= function, inserting it back into the DOM.
+
+#+BEGIN_SRC coffee
+  displayResults = (id, tab1 = "", tab2 = "", tab3 = "") ->
+          $("#tab-results-" + id).html( render(tab1) )
+          $("#tab-logs-" + id).html( render(tab2) )
+          $("#tab-debug-" + id).html( render(tab3) )
+#+END_SRC
+
+** Simulation
+
+   At first, we'll want to simulate the process of connecting and
+   waiting for a rover to finish. To make the game more pleasant, we
+   should allow this to be skipped.
+
+#+BEGIN_SRC coffee
+  simulation = ->
+          parent = $(this).parents(".code")
+          id     = parent.attr("id").substring(5)
+          messages = [
+                  "Connecting to rover base station...",
+                  "Downloading instructions to rover...",
+                  "Rover acknowledged receiving instructions.",
+                  "Waiting for completion of rover mission..."
+          ]
+          panel = $("#tab-results-" + id)
+  
+          panel.html("") # Clear it out...
+          timer = ->
+                  if messages.length == 0
+                          evalRun(parent)
+                  else
+                          panel.append("<code>" + messages[0] + "</code><br/>")
+  
+                          messages = _.rest(messages)
+                          nextTime = Math.round( Math.random() * 2000 )
+                          if messages.length == 0
+                                  nextTime += 3000   # Last message longer.
+                          setTimeout(timer, nextTime)
+  
+          timer()  # Start the timer count-down...                        
+#+END_SRC
+** Evaluate
+
+    This function will be called by the "Run" button, and it should
+    gather up the code in the =textarea=, evaluate it, and put the
+    results back into the page.
+
+#+BEGIN_SRC coffee
+  evalRun = (parent) ->
+    id     = parent.attr("id").substring(5)
+    height = $("textarea", parent).height()
+    code   = $("textarea", parent).val()
+  
+    # Odd section where we sandwich the player's "program" inside our
+    # own code, including creating a canvasid variable for the turtlewax.  
+    fullcode = prefixCode +
+          code.replace(/^|\n/g, "\n   ") + "\n" + postfixCode
+    # console.log("Fullcode:", fullcode)
+    
+    try
+      results = CoffeeScript.eval(fullcode)
+      displayResults(id, results.results, results.log, results.debug )
+    catch e
+      console.log "Error", e
+      if e.message == "Can't find variable: _"
+        e.message = "Replace the underbar characters<br/>before clicking <b>Run</b>."
+      displayResults(id, e.message, e )
+  
+    # console.log("Results:", results)
+#+END_SRC
+
+** Variable Values
+
+  I would like to show results of any variables defined /by the user/.
+  According to [[http://stackoverflow.com/questions/2051678/getting-all-variables-in-scope][this discussion]], we can get the properties on the
+  =window= object:
+
+#+BEGIN_SRC js :tangle no
+  var a = 1, b = 2, c = 3;
+  for ( var i in window ) { 
+      console.log(i, typeof window[i], window[i]);
+  }
+#+END_SRC
+
+  Of course, this only works in a browser (that defines the =window=
+  variable).
+
+  We would just need to filter every other thing out. Perhaps, we can
+  run it first, and store the variable names, then run it a second
+  time, and compute the difference.
+
+#+BEGIN_SRC coffee :tangle no
+  _globs = []
+  for i in GLOBAL || Window
+      _globs.push(i)
+  
+  _results = []
+  a = 1
+  b = "hello world"
+  c = 42 + a
+  
+  for i in GLOBAL
+          if _globs.indexOf(i) != -1
+                 _results.push i + " (" + (typeof GLOBAL[i]) + ") = " + GLOBAL[i]
+  
+  return _results
+#+END_SRC
+
+* Create Editable Cells (Template)
+
+  The JS code with jQuery will convert all =<pre>= blocks to editable
+  fields with buttons for evaluation. 
+
+#+BEGIN_SRC coffee :noweb tangle
+  template = '''
+  <<htmltemplate>>
+  '''
+  
+  $ ->
+    $("pre").each (i, pre) ->
+      $pre = $(pre)
+      code = $pre.text()
+      lines = code.replace(/[^\n\r]/g, '').length + 1
+    
+      t = $(template).attr("id", "code-"+i).
+        find(".button-run").button().click(simulation).end().
+        find(".button-big").button().click(enlargeArea).end().
+        find("textarea").attr("rows", lines).val(code).end().
+  
+        find("a.tab-results").attr("href", "#tab-results-"+ i).end().
+        find("#tab-results").attr("id", "tab-results-"+ i).end().
+        find("a.tab-logs").attr("href", "#tab-logs-"+ i).end().
+        find("#tab-logs").attr("id", "tab-logs-"+ i).end().
+        find("a.tab-debug").attr("href", "#tab-debug-"+ i).end().
+        find("#tab-debug").attr("id", "tab-debug-"+ i).end().
+        find("a.tab-map").attr("href", "#tab-map-"+ i).end().
+        find("#tab-map").attr("id", "tab-map-"+ i).end().
+        find("#rover-map").attr("id", "rover-map-"+ i).end()
+      $pre.replaceWith t
+  
+    $(".tabs").tabs()
+#+END_SRC
+
+  We really need a /template/ of sorts:
+
+#+NAME: htmltemplate
+#+BEGIN_SRC html :tangle no
+  <table class="code">
+    <tr>
+      <td class="code-area">
+        <textarea cols="55" rows="5"></textarea>
+      </td>
+      <td class="buttons">
+        <button type="button" class="button-run">Go</button> <br/>
+        <button type="button" class="button-big">&darr;</button>
+      </td>
+      <td class="results">
+        <div class="tabs">
+          <ul>
+            <li><a class="tab-results">Result</a></li>
+            <li><a class="tab-logs">Logs</a></li>
+            <li><a class="tab-debug">Engine</a></li>
+            <li><a class="tab-map">Map</a></li>
+          </ul>
+          <div id="tab-results" class="results tabbed-section">
+            Press the <b>Go</b> button to send your commands to the
+            remote rover. This area will contain the results of the mission.
+          </div>
+          <div id="tab-logs" class="logs tabbed-section">
+            Command messages from <code>console.log()</code> will appear
+            in this panel.
+          </div>
+          <div id="tab-debug" class="debug tabbed-section">
+            Log messages from the remote rover's activity will be
+            shown in this panel.
+          </div>
+          <div id="tab-map" class="map tabbed-section">
+            <canvas id="rover-map" height="300" width="400">
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+#+END_SRC
+
+* Styling
+
+#+BEGIN_SRC css :tangle ../styles/console.css
+  table.code td.code-area {
+    width: 45%;
+  }
+  table.code td.results {
+    width: 45%;
+  }
+  
+  .buttons {
+    padding: 0px 12px;
+  }
+  
+  .buttons button {
+    font-size: 12px;
+    width: 62px;
+    clear: both;
+  }
+  
+  .code-area {
+  }
+  
+  textarea {
+    font-size: 17px;
+    font-family: courier, monospace;
+    min-height: 60px;
+    background-color: #444;
+    color: aqua;
+    border: 1px solid white;
+    padding: 12px;
+  }
+  
+  .tabs {
+    font-size: 16px;
+  }
+  .tabs ul {
+    font-size: 14px;
+  }
+  a.ui-tabs-anchor {
+    font-size: 14px;
+  }
+  .ui-button-text {
+    font-size: 16px;
+  }
+
+  .tabs th {
+    text-align: right;
+    padding-right: 8px;
+  }
+  .tabs code {
+    color: orange;
+  }
+
+  .tabbed-section {
+  }
+  #tab-results {
+  }
+  #tab-logs {
+  }
+  #tabs-debug {
+  }
+  #tabs-map {
+  }
+#+END_SRC
+
+* Technical Section
+  
+  This file originally came from an [[http://orgmode.org][org-mode]] file.
+  Create the script by tangling it with: =C-c C-v t=
+  
+#+PROPERTY: tangle ../scripts/console.coffee
+#+PROPERTY: comments org
+#+PROPERTY: shebang #!/usr/bin/env coffee
+#+DESCRIPTION: Creates the CoffeeScript support code for RV Consoles

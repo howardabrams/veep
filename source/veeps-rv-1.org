@@ -1,0 +1,259 @@
+#+TITLE:  VEEPS Library, v1
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-05 Mon][2013-08-05 Mon]
+#+TAGS:   veeps
+
+This is the first rover library for the student to use. By claiming it
+is version 1, we can upgrade it later when we need... for instance, by
+letting them get the RVs to talk to each other or something.
+
+* Worlds of Data
+
+  All worlds will have some /data/ associated with the land, hazards
+  and other events.
+
+#+BEGIN_SRC coffee
+  worlds =
+          lab:
+                  name: "White Lab",
+                  terrain: (x, y) -> 1
+          lab_with_sand:
+                  name: "Sandy Lab",
+                  terrain: (x, y) -> if x > 2 then 0.75 else 1
+#+END_SRC
+
+* Robotic Vehicles
+
+  Each RV should have a list of "features", and is given a results
+  status after the mission.
+
+#+BEGIN_SRC coffee
+  robots =
+          "875E":
+                  name: "Itsy",
+                  energy: 30
+#+END_SRC
+
+* Missions
+
+  Each "mission" associates a rover and a world.
+
+#+BEGIN_SRC coffee
+  missions = [
+          [ robots["875E"], worlds["lab"] ],
+          [ robots["875E"], worlds["lab"] ],
+          [ robots["875E"], worlds["lab_with_sand"] ]
+  ]
+#+END_SRC
+
+* Current Mission
+
+  This variable is a module-local variable to hold the "current"
+  mission. The =connect()= function will reset this, and other
+  functions will add information to the object.
+
+#+BEGIN_SRC coffee
+  rv = null
+#+END_SRC
+
+* Turtle Wax
+
+  We'll use Dave Balmer's [[https://github.com/davebalmer/turtlewax][TurtleWax]] project to implement a "map" of
+  where the rover goes. We'll initialize the =turtle= variable during
+  the =connect= method.
+
+#+BEGIN_SRC coffee
+  turtle = null
+#+END_SRC
+
+* Log Message
+
+  I would like to just use =console.log=, but it might be better to
+  have some internal logging functionality for now.
+
+#+BEGIN_SRC coffee
+  log = (parts...) ->
+          rv.log.push( parts.join(" ") )
+  
+  debug = (parts...) ->
+          rv.debug.push( parts.join(" ") )
+#+END_SRC
+
+* Connect
+
+  The connect command is essentially a no-op, but we can use it as an
+  initialization and setup command.
+
+#+BEGIN_SRC coffee
+  connect = (serial) ->
+          [mission, rover, extra, id] = serial.split("-")
+          if ! id
+                  id = 0
+          # console.log(id, mission, rover, extra)
+          if missions[mission] and robots[rover]
+                  rv =
+                          robot: missions[mission][0],
+                          world: missions[mission][1],
+                          x: 0, y: 0, z: 0,
+                          direction: 0,
+                          distance: 0, maxdist: 0,
+                          traveled: 0,
+                          energy_used: 0,
+                          energy: missions[mission][0].energy,
+                          log: [  'Beginning Mission: ' + ( parseInt(mission) + 1) ],
+                          debug: []
+                  turtle = new Pen("rover-map-" + id)
+  
+                  # ctx.clearRect(0,0,canvas.width,canvas.height)
+                  home =
+                          x: 200
+                          y: 150
+                          size:10
+                          
+                  # Draw a "home" base as a little square
+                  turtle.penstyle("#0ff").pensize(2).
+                          jump(home.x + home.size/2,
+                               home.y + home.size/2).
+                          left(home.size).up(home.size).
+                          right(home.size).down(home.size).
+                          close().text("Base").draw()
+  
+                  # Set up the "path" for the rover.
+                  turtle.jump(home.x, home.y).pensize(4).penstyle("#0f0").pendown()
+  
+                  log "Rover: #{rv.robot.name} (Energy: #{rv.robot.energy})"
+          else
+                  throw "Failed to connect to RV: " + id
+#+END_SRC
+
+* Dock
+
+  This verifies that the RV is back at the dock. This can be used to
+  return a mission summary.
+
+#+BEGIN_SRC coffee
+  dock = ->
+    if rv
+      if rv.x < 1 and rv.y < 1
+        turtle.close()
+        turtle.draw()
+        log("Re-Docked.")
+      else
+        log("RV is not at base station.")
+  
+      results =
+          Name: rv.robot.name
+          Initial_Energy: rv.robot.energy
+          Energy_Used: rv.energy_used
+          Energy_Left: rv.energy
+          Current_Direction: rv.direction.toFixed(2)
+          Maximum_Distance: rv.maxdist.toFixed(2)
+          Distance_Traveled: rv.traveled.toFixed(2)
+  
+      [ results, rv.log, rv.debug ]
+#+END_SRC
+
+* Forward
+
+  Takes a number of "pulses" for the engine. 1 pulse is 1 revolution
+  of the wheel, and this process ends up moving
+  the rover 1 meter on cement (the default terrain). This is because
+  the wheel diameter is about .318310155 meters.
+
+  Since pi * .318310155 ~= 1, This will work, however, this can be
+  affected by the wheel traction of the given terrain.
+
+#+BEGIN_SRC coffee
+  move_pulse = (direction, energy_needed) ->
+          x = rv.x
+          y = rv.y
+          rv.energy_used += energy_needed;
+          rv.energy -= energy_needed;
+  
+          if rv.energy < 0
+               log "Energy drained. Stopping at #{x}, #{y}"
+               throw "Energy drained"
+  
+          rv.traveled += rv.world.terrain(x,y)
+          rv.x += Math.cos(direction) * rv.world.terrain(x,y)
+          rv.y += Math.sin(direction) * rv.world.terrain(x,y)
+  
+          debug "Traveled:", rv.traveled, "m - Energy:", rv.energy,
+               "(", rv.x.toFixed(2), ",", rv.y.toFixed(2), ")"
+  
+  move = (pulses, direction, energy_needed) ->
+          throw "Can't move without connection." if not rv
+  
+          for m in [1..pulses]
+                  move_pulse(direction, energy_needed)
+  
+          # Calculate the rv distance from the base station
+          rv.distance = Math.sqrt( rv.x * rv.x + rv.y * rv.y)
+          log "Current distance:", rv.distance.toFixed(2), "m"
+                      # "(", rv.x.toFixed(2), ", ", rv.y.toFixed(2), ")"
+          # Store this distance as "max" if it is larger than the rv
+          rv.maxdist = Math.max(rv.distance, rv.maxdist)
+  
+  forward = (pulses) ->
+          move(pulses, rv.direction * (Math.PI/180), 1)
+          turtle.go(pulses * 10)
+#+END_SRC
+
+* Backward
+
+  This will just call forward with a negative amount.
+
+#+BEGIN_SRC coffee
+  backward = (pulses) ->
+          move(pulses, (180 - rv.direction) * (Math.PI/180), 1.5)
+          turtle.back(pulses * 10)
+#+END_SRC
+
+* Left and Right
+
+  Turning just adjusts the =direction= property.
+
+#+BEGIN_SRC coffee
+  left = (degrees) ->
+      rv.direction += degrees
+      turtle.turn(- degrees)
+      debug "Turned left", degrees, "° - Current:", rv.direction
+
+  right = (degrees) ->
+      rv.direction -= degrees
+      turtle.turn(degrees)
+      debug "Turned right", degrees, "° - Current:", rv.direction
+#+END_SRC
+
+* Technical Section
+  
+  In order to get this library to work in both Node.js (during
+  development) and on the browser, we need to /export/ the accessible
+  functions to something else:
+
+#+BEGIN_SRC coffee
+  if (typeof(window) != "undefined")  
+          window['rv'] =
+                  connect:  connect,
+                  forward:  forward,
+                  backward: backward,
+                  left:     left,
+                  right:    right,
+                  dock:     dock
+  else
+          exports.connect  = connect
+          exports.forward  = forward
+          exports.backward = backward
+          exports.left     = left
+          exports.right    = right
+          exports.dock     = dock
+#+END_SRC
+
+  This file originally came from an [[http://orgmode.org][org-mode]] file.
+  Create the script by tangling it with: =C-c C-v t=
+  
+#+PROPERTY: tangle ../scripts/veeps-rv-1.coffee
+#+PROPERTY: comments org
+#+PROPERTY: shebang #!/usr/bin/env coffee
+#+DESCRIPTION: 

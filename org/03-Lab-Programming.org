@@ -1,0 +1,48 @@
+#+TITLE:  Exercising in the Lab
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-27 Tue]
+#+TAGS:   veeps coffeescript
+
+That was a lot of typing in that previous console.  This next console
+shows you how to repeat actions, using a command called =for..in=. 
+
+In this case, we will repeat moving =forward= and turning to the
+=left=. You just need to replace the =_= with the number of times we
+should repeat the loop... that is, =4=.
+
+#+BEGIN_SRC js
+  rv.connect("1-875E-65297D640A2D")
+
+  d = 7
+  for c in [1 .. _]
+      rv.forward(d)   # Anything indent like this
+      rv.left(90)     # will be repeated
+
+  rv.dock()
+#+END_SRC
+
+The two commands that are /indented/ will be done repeatedly, and the
+=rv.dock= command, since it is not indented, is not part of the loop.
+
+Good job!
+
+[[file:03-Final-Lab.org][Next]]
+
+#+BEGIN_HTML
+  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-ui.js"></script>
+  <script src="scripts/lib/pen_min.js"></script>
+  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+
+  <script src="scripts/console.coffee" type="text/coffeescript"></script>
+  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+#+END_HTML
+
+#+PROPERTY: tangle no
+#+PROPERTY: comments org
+
