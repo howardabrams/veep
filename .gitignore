@@ -1,11 +1,10 @@
-*.html
 *~
-scripts/console.coffee
-styles/console.css
-styles/main_flymake.css
+site/styles/console.css
+site/scripts/console.coffee
+site/scripts/console.js
+site/scripts/veeps-rv-1.js
+site/scripts/veeps-rv-1.coffee
+*_flymake.css
 node_modules
 old
-scripts/console.js
-scripts/veeps-rv-1.coffee scripts/veeps-rv-1.js
-scripts/veeps-rv-1.js
-scripts/veeps-rv-1.coffee
+

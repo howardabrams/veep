@@ -20,7 +20,7 @@ letting them get the RVs to talk to each other or something.
                   terrain: (x, y) -> 1
           lab_with_sand:
                   name: "Sandy Lab",
-                  terrain: (x, y) -> if x > 2 then 0.75 else 1
+                  terrain: (x, y) -> if y > 2 then 0.75 else 1
 #+END_SRC
 
 * Robotic Vehicles
@@ -156,17 +156,15 @@ letting them get the RVs to talk to each other or something.
 
 * Forward
 
-  Takes a number of "pulses" for the engine. 1 pulse is 1 revolution
-  of the wheel, and this process ends up moving
-  the rover 1 meter on cement (the default terrain). This is because
-  the wheel diameter is about .318310155 meters.
+** Pulse Move
 
-  Since pi * .318310155 ~= 1, This will work, however, this can be
-  affected by the wheel traction of the given terrain.
+   Given a direction (in radians, mind you) and the energy to be
+   consumed for this "single value push" (1 for forward motion and
+   1.5 for retrograde).
 
 #+BEGIN_SRC coffee
   move_pulse = (direction, energy_needed) ->
-          x = rv.x
+          x = rv.x      # Save the current location
           y = rv.y
           rv.energy_used += energy_needed;
           rv.energy -= energy_needed;
@@ -175,16 +173,33 @@ letting them get the RVs to talk to each other or something.
                log "Energy drained. Stopping at #{x}, #{y}"
                throw "Energy drained"
   
-          rv.traveled += rv.world.terrain(x,y)
-          rv.x += Math.cos(direction) * rv.world.terrain(x,y)
-          rv.y += Math.sin(direction) * rv.world.terrain(x,y)
+          # The 'distance' is the amount the rover can travel for a
+          # particular spot in this world...
+          distance = rv.world.terrain(x,y)
+          console.log "Distance", distance, "Direction", direction
+          
+          turtle.go(distance * 10.0)   # Update the map
   
-          debug "Traveled:", rv.traveled, "m - Energy:", rv.energy,
+          rv.traveled += distance      # Store the total amount traveled.
+          rv.x += Math.cos(direction) * distance
+          rv.y += Math.sin(direction) * distance
+  
+          debug "Traveled:", distance, "m - Energy:", rv.energy,
                "(", rv.x.toFixed(2), ",", rv.y.toFixed(2), ")"
-  
+#+END_SRC
+
+** Move
+
+  Takes a number of "pulses" for the engine. 1 pulse is 1 revolution
+  of the wheel, and this process ends up moving the rover 1 meter on
+  cement (the default terrain). This is because the wheel diameter is
+  about .318310155 meters.
+
+  Since pi * .318310155 ~= 1, This will work, however, this can be
+  affected by the wheel traction of the given terrain.
+
+#+BEGIN_SRC coffee
   move = (pulses, direction, energy_needed) ->
-          throw "Can't move without connection." if not rv
-  
           for m in [1..pulses]
                   move_pulse(direction, energy_needed)
   
@@ -194,20 +209,25 @@ letting them get the RVs to talk to each other or something.
                       # "(", rv.x.toFixed(2), ", ", rv.y.toFixed(2), ")"
           # Store this distance as "max" if it is larger than the rv
           rv.maxdist = Math.max(rv.distance, rv.maxdist)
-  
+#+END_SRC
+
+  The =forward= function just needs to call the =move= function with
+  a direction converted from degrees to radians.
+
+#+BEGIN_SRC coffee
   forward = (pulses) ->
+          throw "Can't move without connection." if not rv
           move(pulses, rv.direction * (Math.PI/180), 1)
-          turtle.go(pulses * 10)
 #+END_SRC
 
 * Backward
 
-  This will just call forward with a negative amount.
+  This will just call the =move= but with an opposite radian direction.
 
 #+BEGIN_SRC coffee
   backward = (pulses) ->
+          throw "Can't move without connection." if not rv
           move(pulses, (180 - rv.direction) * (Math.PI/180), 1.5)
-          turtle.back(pulses * 10)
 #+END_SRC
 
 * Left and Right
@@ -253,7 +273,7 @@ letting them get the RVs to talk to each other or something.
   This file originally came from an [[http://orgmode.org][org-mode]] file.
   Create the script by tangling it with: =C-c C-v t=
   
-#+PROPERTY: tangle ../scripts/veeps-rv-1.coffee
+#+PROPERTY: tangle ../site/scripts/veeps-rv-1.coffee
 #+PROPERTY: comments org
 #+PROPERTY: shebang #!/usr/bin/env coffee
 #+DESCRIPTION: 

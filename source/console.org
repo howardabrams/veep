@@ -363,7 +363,7 @@
   This file originally came from an [[http://orgmode.org][org-mode]] file.
   Create the script by tangling it with: =C-c C-v t=
   
-#+PROPERTY: tangle ../scripts/console.coffee
+#+PROPERTY: tangle ../site/scripts/console.coffee
 #+PROPERTY: comments org
 #+PROPERTY: shebang #!/usr/bin/env coffee
 #+DESCRIPTION: Creates the CoffeeScript support code for RV Consoles

@@ -1,0 +1,34 @@
+#+TITLE:  Final Lab Work
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-25 Sun]
+#+TAGS:   veeps coffeescript
+
+Here is a console to another RV, but the lab where it lives isn't
+all nice, smooth cement. This one is partly covered in loose marbles!
+Don't laugh, we have sent our RVs to some pretty odd planets.
+
+The RV will slip on marbles, so sending it forward 1 meter,
+may mean it doesn't really travel for a full meter.
+
+This is important when trying to make sure you have enough energy to
+get back to the base station. Let's start by moving in a square 7
+meters on a side.  How far do you think we will have traveled?
+
+#+BEGIN_SRC js
+  rv.connect("2-875E-65297D640A2D");
+
+  for x in [1 .. 4]
+      rv.forward(_);
+      rv.left(90);
+
+  rv.dock();
+#+END_SRC
+
+Normally, if an RV traveled in a square with 7 meters on a side, it
+should travel 49 meters, right? But the **Distance Traveled** on this
+RV shows it didn't travel quite that far.
+
+Can you figure out where the marbles begin?
+
+[[file:10-Math.org][Next]]

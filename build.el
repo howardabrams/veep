@@ -2,9 +2,9 @@
 
 (setq org-publish-project-alist
      '(("veep-chapters"
-        :base-directory "~/Google Drive/veep/org"
+        :base-directory "org"
         :base-extension "org"
-        :publishing-directory "~/Google Drive/veep/site"
+        :publishing-directory "site"
         :recursive t
         :section-numbers nil
         :with-toc nil
@@ -23,22 +23,48 @@
                  <link href='styles/console.css' type='text/css' rel='Stylesheet' />               
                  <script src='scripts/console.coffee' type='text/coffeescript'></script>
                  <script src='scripts/veeps-rv-1.coffee' type='text/coffeescript'></script>"
-        :publishing-function org-html-publish-to-html)
-       ("veep-styles"
-        :base-directory "styles"
-        :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|deb"
-        :publishing-directory "site/styles"
-        :recursive t
-        :publishing-function org-publish-attachment)
-       ("veep-scripts"
-        :base-directory "scripts"
-        :base-extension "coffee\\|js"
-        :publishing-directory "site/scripts"
-        :recursive t
-        :publishing-function org-publish-attachment)
-       ("veep-images"
-        :base-directory "images"
-        :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|deb"
-        :publishing-directory "site/images"
-        :recursive t
-        :publishing-function org-publish-attachment)))
+
+        ;; If publishing from an older version of org-mode (notably
+        ;; from the command line), use the following line:
+        ;;; :publishing-function org-publish-org-to-html
+
+        ;; If publishing from a new version of org-mode:
+        :publishing-function org-html-publish-to-html
+        )
+       ;; ("veep-styles"
+       ;;  :base-directory "styles"
+       ;;  :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|deb"
+       ;;  :publishing-directory "site/styles"
+       ;;  :recursive t
+       ;;  :publishing-function org-publish-attachment)
+       ;; ("veep-scripts"
+       ;;  :base-directory "scripts"
+       ;;  :base-extension "coffee\\|js"
+       ;;  :publishing-directory "site/scripts"
+       ;;  :recursive t
+       ;;  :publishing-function org-publish-attachment)
+       ;; ("veep-images"
+       ;;  :base-directory "images"
+       ;;  :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|deb"
+       ;;  :publishing-directory "site/images"
+       ;;  :recursive t
+       ;;  :publishing-function org-publish-attachment)))
+       ))
+(defun babel-a-file (file)
+   "Read the contents of a babel file into a temp buffer and then tangle it."
+   (when (file-readable-p file)
+     (with-temp-buffer
+       (insert-file-contents file)
+       (message "Working on %s" file)
+       (org-babel-tangle))))
+
+(defun babel-all-files (files)
+  (when (consp files)
+    (progn
+      (babel-a-file (car files))
+      (babel-all-files (cdr files)))))
+
+(babel-all-files (directory-files "source" t ".*\.org"))
+(consp (cdr '(1)))
+
+(org-publish-all)
