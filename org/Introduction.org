@@ -1,0 +1,17 @@
+#+TITLE:  Welcome to VEEP
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-09-01 Sun]
+#+TAGS:   veeps coffeescript
+
+This is a game where you accomplish missions by controlling robots.
+
+The twist is that instead of mindlessly moving your robots with a
+joystick or keyboard, you control it with /your mind/. That's right,
+you think about what the robot should do, and give it a bunch of
+commands. You then look at what happened after... as if the robot was
+on another plant and could only communicate with you every now and
+then.
+
+Why yes, this is my sinister attempt at teaching programming by
+playing a game.

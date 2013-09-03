@@ -136,7 +136,7 @@ letting them get the RVs to talk to each other or something.
   dock = ->
     if rv
       if rv.x < 1 and rv.y < 1
-        turtle.close()
+        # turtle.close()
         turtle.draw()
         log("Re-Docked.")
       else
@@ -244,6 +244,51 @@ letting them get the RVs to talk to each other or something.
       rv.direction -= degrees
       turtle.turn(degrees)
       debug "Turned right", degrees, "° - Current:", rv.direction
+#+END_SRC
+
+* Math Function Helpers
+
+  Would be nice if we could wrap the trigonometry functions in
+  /non-radians/:
+
+** Sine, Cosine and Tangent
+
+   The only /trick/ here is to convert the degrees (given as an input)
+   to radians as expected by the JavaScript library.
+
+#+BEGIN_SRC coffee
+sin = (degrees) ->
+  Math.sin(degrees * Math.PI/180)
+#+END_SRC
+
+#+BEGIN_SRC coffee
+cos = (degrees) ->
+  Math.cos(degrees * Math.PI/180)
+#+END_SRC
+
+#+BEGIN_SRC coffee
+tan = (degrees) ->
+  Math.tan(degrees * Math.PI/180)
+#+END_SRC
+
+** Arc Tangent
+
+   The "arc" versions of functions just require conversion on the way
+   out.
+
+#+BEGIN_SRC coffee
+asin = (value) ->
+  Math.asin(value) * (180/Math.PI)
+#+END_SRC
+
+#+BEGIN_SRC coffee
+acos = (value) ->
+  Math.acos(value) * (180/Math.PI)
+#+END_SRC
+
+#+BEGIN_SRC coffee
+atan = (value) ->
+  Math.atan(value) * (180/Math.PI)
 #+END_SRC
 
 * Technical Section

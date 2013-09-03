@@ -7,13 +7,14 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="scripts/lib/jcanvas.min.js"></script>
-    <script src="scripts/title.js" type="text/javascript"></script>
+    <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+    <script src="scripts/title.coffee" type="text/coffeescript"></script>
   </head>
   <body>
     <canvas id="stars" width="800" height="800"></canvas>
     <div id="planets">&nbsp;</div>
 
-    <h1 class="webkit-font">VEEP</h1>
+    <h1 id="main-title" class="webkit-font">VEEP</h1>
 
     <div id="contents">
       <ul id="titles">
@@ -23,17 +24,18 @@
         <li id="titles-program">Program</li>
       </ul>
       <div id="version-box">
-        <div id="version"> Version: 1.0</div>
-        <div id="history"> Change List</div>
+        <button class="button" data-url="Introduction.html">First Time?</button>
+        <button class="button" data-url="Change-List.html">Changes</button>
+        <button class="button" data-url="Source-Code.html">Contribute?</button>
       </div>
 
       <div id="chapters-box">
         <ul id="chapters">
-          <li> <a href="intro.html">Introduction</a> </li> 
-          <li> <a href="01-Meet-M.html">Chapter 1</a> </li> 
-          <li> <a href="02-Another-Lab.html">Chapter 2</a> </li> 
-          <li> <a href="03-Lab-Programming.html">Chapter 3</a> </li> 
-          <li> <a href="03-Final-Lab.html">Chapter 4</a> </li> 
+          <li> <a href="Welcome.html">Welcome</a> </li>
+          <li> <a href="01-Meet-M.html">Meet M</a> </li>
+          <li> <a href="02-Another-Lab.html">Lab Work</a> </li>
+          <li> <a href="03-Lab-Programming.html">Exercising</a> </li>
+          <li> <a href="04-Final-Lab.html">Marbles?</a> </li>
         </ul>
       </div>
     </div>

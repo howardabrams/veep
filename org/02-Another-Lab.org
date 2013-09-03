@@ -4,9 +4,13 @@
 #+DATE:   [2013-08-25 Sun]
 #+TAGS:   veeps coffeescript
 
+#+BEGIN_HTML
+<img src="images/m-hint.png" style="float:right; height:360px"/>
+#+END_HTML
+
 Let's try another lab mission. The wheels on most RVs are geared
-weirdly, and use more energy going backwards than forwards. Each RV
-has only so much energy before it needs to dock and recharge.
+oddly, and use more energy going backwards than forwards.[fn:1] Each RV
+has only so much energy before it needs to dock and re-charge.
 
 The following console connects to an RV with 30 /decabrams/ of energy
 for the wheel engines. Moving forward takes about 1 decabram. Why yes,
@@ -16,6 +20,10 @@ See how far away you can move the RV with that limited amount of energy.
 The =rv.left= and =rv.right= take a number of degrees to turn the
 RV. So saying =rv.left(90)= will tell the RV to turn to the left
 90°. Make sense?
+
+The easiest option is to go forward 15 meters and turn around 180°,
+but what would be the fewest number of turns without following the
+same path? [fn:2]
 
 Let's have the RV drive in the largest square we can. The =d= is what
 we call a /variable/. We can set it to a number and then reuse
@@ -41,20 +49,50 @@ To see your work and the path the RV took, click the /Map/ tab.
 
 [[file:03-Lab-Programming.org][Next]]
 
-#+BEGIN_HTML
-  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
-  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
-  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
-  <script src="scripts/lib/jquery-ui.js"></script>
-  <script src="scripts/lib/pen_min.js"></script>
-  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
-  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
-  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+* Footnotes
 
-  <script src="scripts/console.coffee" type="text/coffeescript"></script>
-  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+[fn:1] In the last console, it traveled 4 meters forward, 4 meters
+backward, but used 10 decabrams of energy, when it should have used
+only 8. Moving backwards, requires 1.5 decabrams for each meter.
+
+[fn:2] Sure, the longest path without retracing is a triangle with two
+very long arms and a very short connection. Remember this famous
+formula?
+
+#+BEGIN_HTML
+<table width="700"><tr><td>
+<i>   a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>  </i>
+</td><td>
+...can be something like...
+</td><td>
+<i>   3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>  </i>
+</td><td>
+...for a distance of 12
+</td><td></table>
 #+END_HTML
 
-#+PROPERTY: tangle no
-#+PROPERTY: comments org
+In our case, /a/ will be the trip away from the base station (the
+first =forward=), and /c/ will be the return trip (the last
+=forward=). But how much should we give that second =left= turn?
+The answer is with a little trigonometry.
+
+#+BEGIN_EXAMPLE
+  a = 3
+  b = 4
+  c = 5
+  t = 180 - atan(a/b)
+  console.log("Variable t is", t)
+
+  rv.forward(a)
+  rv.left(90)
+  rv.forward(b)
+  rv.left(t)
+  rv.forward(c)
+#+END_EXAMPLE
+
+I guess I should mention that the RV will re-dock if it is within 1
+meter of the base station, so we don't have to worry about being /exact/.
+Alright, I think you know enough to be pretty dangerous. Let's play
+with some rovers is more hostile labs.
+
 

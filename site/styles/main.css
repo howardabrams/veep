@@ -37,3 +37,15 @@ code {
 #postamble {
     display: none;
 }
+
+h2.footnotes {
+    display: none;
+}
+
+a.footref {
+    text-decoration: none;
+}
+
+a.footnum {
+    display: none;
+}

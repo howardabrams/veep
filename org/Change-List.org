@@ -1,0 +1,9 @@
+#+TITLE:  Development History
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@gmail.com
+#+DATE:   [2013-09-01 Sun][2013-09-01 Sun]
+
+  - v 1.0.2 - Updated lesson with hints from some play-testing feedback.
+  - v 1.0.1 - Finished Chapter 4 and filled a lab full of marbles.
+  - v 1.0.0 - Initial release of the software.
+

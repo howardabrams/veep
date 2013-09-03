@@ -1,71 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>More Lab Work</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-<meta name="title" content="More Lab Work"/>
-<meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-08-25"/>
-<meta name="author" content="Howard Abrams"/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
+<!-- 2013-09-02 Mon 15:04 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
-  html { font-family: Times, serif; font-size: 12pt; }
   .title  { text-align: center; }
-  .todo   { color: red; }
+  .todo   { font-family: monospace; color: red; }
   .done   { color: green; }
-  .tag    { background-color: #add8e6; font-weight:normal }
-  .target { }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
-  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
-  .center {margin-left:auto; margin-right:auto; text-align:center;}
-  p.verse { margin-left: 3% }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
   pre {
-	border: 1pt solid #AEBDCC;
-	background-color: #F3F5F7;
-	padding: 5pt;
-	font-family: courier, monospace;
-        font-size: 90%;
-        overflow:auto;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
   }
-  table { border-collapse: collapse; }
-  td, th { vertical-align: top;  }
-  th.right  { text-align:center;  }
-  th.left   { text-align:center;   }
-  th.center { text-align:center; }
-  td.right  { text-align:right;  }
-  td.left   { text-align:left;   }
-  td.center { text-align:center; }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
   dt { font-weight: bold; }
-  div.figure { padding: 0.5em; }
-  div.figure p { text-align: center; }
-  div.inlinetask {
-    padding:10px;
-    border:2px solid gray;
-    margin:10px;
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
     background: #ffffcc;
   }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
   textarea { overflow-x: auto; }
-  .linenr { font-size:smaller }
-  .code-highlighted {background-color:#ffff00;}
-  .org-info-js_info-navigation { border-style:none; }
-  #org-info-js_console-label { font-size:10px; font-weight:bold;
-                               white-space:nowrap; }
-  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
-                                 font-weight:bold; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
 </style>
+
+                 <link href='styles/ui-darkness/jquery-ui.css' rel='Stylesheet'/>
+                 <script src='scripts/lib/underscore-min.js' type='text/javascript'></script>
+                 <script src='scripts/lib/jquery-1.9.1.js' type='text/javascript'></script>
+                 <script src='scripts/lib/jquery-ui.js'></script>
+                 <script src='scripts/lib/pen_min.js'></script>
+                 <script src='scripts/lib/coffee-script.js' type='text/javascript' charset='utf-8'></script>
+                 <link href='styles/main.css' type='text/css' rel='Stylesheet' />
+                 <link href='styles/console.css' type='text/css' rel='Stylesheet' />               
+                 <script src='scripts/main.coffee' type='text/coffeescript'></script>
+                 <script src='scripts/console.coffee' type='text/coffeescript'></script>
+                 <script src='scripts/veeps-rv-1.coffee' type='text/coffeescript'></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
+Copyright (C) 2012  Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -106,29 +144,37 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-
 </head>
 <body>
-
-
 <div id="content">
 <h1 class="title">More Lab Work</h1>
+<img src="images/m-hint.png" style="float:right; height:360px"/>
 
-<p>Let's try another lab mission. The wheels on most RVs are geared
-weirdly, and use more energy going backwards than forwards. Each RV
-has only so much energy before it needs to dock and recharge.
+<p>
+Let's try another lab mission. The wheels on most RVs are geared
+oddly, and use more energy going backwards than forwards.<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup> Each RV
+has only so much energy before it needs to dock and re-charge.
 </p>
+
 <p>
 The following console connects to an RV with 30 <i>decabrams</i> of energy
 for the wheel engines. Moving forward takes about 1 decabram. Why yes,
 this does make the math easy. Ha ha!
 </p>
+
 <p>
 See how far away you can move the RV with that limited amount of energy.
 The <code>rv.left</code> and <code>rv.right</code> take a number of degrees to turn the
 RV. So saying <code>rv.left(90)</code> will tell the RV to turn to the left
 90°. Make sense?
 </p>
+
+<p>
+The easiest option is to go forward 15 meters and turn around 180°,
+but what would be the fewest number of turns without following the
+same path? <sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>
+</p>
+
 <p>
 Let's have the RV drive in the largest square we can. The <code>d</code> is what
 we call a <i>variable</i>. We can set it to a number and then reuse
@@ -136,9 +182,9 @@ it. Change the <code>_</code> in this console to a number, but not too large tha
 the rover doesn't make it back.
 </p>
 
+<div class="org-src-container">
 
-
-<pre class="example">rv.connect("1-875E-65297D640A2D")
+<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"1-875E-65297D640A2D"</span>)
 
 d = _
 rv.forward(d)
@@ -151,30 +197,71 @@ rv.forward(d)
 
 rv.dock()
 </pre>
-
+</div>
 
 <p>
 To see your work and the path the RV took, click the <i>Map</i> tab.
 </p>
+
 <p>
 <a href="03-Lab-Programming.html">Next</a>
 </p>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
 
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
+In the last console, it traveled 4 meters forward, 4 meters
+backward, but used 10 decabrams of energy, when it should have used
+only 8. Moving backwards, requires 1.5 decabrams for each meter.
+</p></div>
 
-  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
-  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
-  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
-  <script src="scripts/lib/jquery-ui.js"></script>
-  <script src="scripts/lib/pen_min.js"></script>
-  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
-  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
-  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">
+Sure, the longest path without retracing is a triangle with two
+very long arms and a very short connection. Remember this famous
+formula?
+</p>
 
-  <script src="scripts/console.coffee" type="text/coffeescript"></script>
-  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+<table width="700"><tr><td>
+<i>   a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>  </i>
+</td><td>
+...can be something like...
+</td><td>
+<i>   3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>  </i>
+</td><td>
+...for a distance of 12
+</td><td></table>
+
+<p class="footpara">
+In our case, <i>a</i> will be the trip away from the base station (the
+first <code>forward</code>), and <i>c</i> will be the return trip (the last
+<code>forward</code>). But how much should we give that second <code>left</code> turn?
+The answer is with a little trigonometry.
+</p>
+
+<pre class="example">
+a = 3
+b = 4
+c = 5
+t = 180 - atan(a/b)
+console.log("Variable t is", t)
+
+rv.forward(a)
+rv.left(90)
+rv.forward(b)
+rv.left(t)
+rv.forward(c)
+</pre>
+
+<p class="footpara">
+I guess I should mention that the RV will re-dock if it is within 1
+meter of the base station, so we don't have to worry about being <i>exact</i>.
+Alright, I think you know enough to be pretty dangerous. Let's play
+with some rovers is more hostile labs.
+</p></div>
 
 
 </div>
-
+</div></div>
 </body>
 </html>

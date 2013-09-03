@@ -8,3 +8,7 @@ site/scripts/veeps-rv-1.coffee
 node_modules
 old
 
+site/Change-List.html
+site/Introduction.html
+site/Source-Code.html
+site/Welcome.html

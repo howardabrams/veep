@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Final Lab Work</title>
-<!-- 2013-08-30 Fri 22:07 -->
+<!-- 2013-09-02 Mon 09:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 
@@ -95,6 +95,7 @@
                  <script src='scripts/lib/coffee-script.js' type='text/javascript' charset='utf-8'></script>
                  <link href='styles/main.css' type='text/css' rel='Stylesheet' />
                  <link href='styles/console.css' type='text/css' rel='Stylesheet' />               
+                 <script src='scripts/main.coffee' type='text/coffeescript'></script>
                  <script src='scripts/console.coffee' type='text/coffeescript'></script>
                  <script src='scripts/veeps-rv-1.coffee' type='text/coffeescript'></script>
 <script type="text/javascript">
@@ -161,34 +162,50 @@ may mean it doesn't really travel for a full meter.
 <p>
 This is important when trying to make sure you have enough energy to
 get back to the base station. Let's start by moving in a square 7
-meters on a side.  How far do you think we will have traveled?
+meters on a side.  How far do you think we will have traveled?<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>
 </p>
+
+<p>
+Hrm. The <b><b>Distance Traveled</b></b> on this RV shows it didn't travel quite
+as far as it should. Can you figure out where the marbles are?<sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>
+</p>
+
 
 <div class="org-src-container">
 
-<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"2-875E-65297D640A2D"</span>);
+<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"2-875E-65297D640A2D"</span>)
 
 <span style="color: #b9ca4a;">for</span> x <span style="color: #b9ca4a;">in</span> [1 .. 4]
-    rv.forward(_);
-    rv.left(90);
+    rv.forward(_)
+    rv.left(90)
 
-rv.dock();
+rv.dock()
 </pre>
 </div>
 
 <p>
-Normally, if an RV traveled in a square with 7 meters on a side, it
-should travel 49 meters, right? But the <b><b>Distance Traveled</b></b> on this
-RV shows it didn't travel quite that far.
-</p>
-
-<p>
-Can you figure out where the marbles begin?
-</p>
-
-<p>
 <a href="10-Math.html">Next</a>
 </p>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
+Clearly it will travel 28 meters, since a square has four
+sides and <i>7 x 4 = 28</i>.
+</p></div>
+
+<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">
+The trick is to look at the details in the <b>Engine</b> tab, as it
+shows what happens with each command you give it. First step moves 7
+meters, but the next should move about 9.9 meters (because that is the
+square root of 98). Why? Remember the formula a² + b² = c² ? Anyway,
+the marbles are clearly to the left of the base station. Perhaps make
+a small square and keep getting bigger until it doesn't come back?
+</p></div>
+
+
 </div>
+</div></div>
 </body>
 </html>

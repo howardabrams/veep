@@ -13,22 +13,32 @@ may mean it doesn't really travel for a full meter.
 
 This is important when trying to make sure you have enough energy to
 get back to the base station. Let's start by moving in a square 7
-meters on a side.  How far do you think we will have traveled?
+meters on a side.  How far do you think we will have traveled?[fn:1]
+
+Hrm. The **Distance Traveled** on this RV shows it didn't travel quite
+as far as it should. Can you figure out where the marbles are?[fn:2]
+
 
 #+BEGIN_SRC js
-  rv.connect("2-875E-65297D640A2D");
+  rv.connect("2-875E-65297D640A2D")
 
   for x in [1 .. 4]
-      rv.forward(_);
-      rv.left(90);
+      rv.forward(_)
+      rv.left(90)
 
-  rv.dock();
+  rv.dock()
 #+END_SRC
 
-Normally, if an RV traveled in a square with 7 meters on a side, it
-should travel 49 meters, right? But the **Distance Traveled** on this
-RV shows it didn't travel quite that far.
-
-Can you figure out where the marbles begin?
-
 [[file:10-Math.org][Next]]
+
+[fn:1] Clearly it will travel 28 meters, since a square has four
+sides and /7 x 4 = 28/.
+
+[fn:2] The trick is to look at the details in the *Engine* tab, as it
+shows what happens with each command you give it. First step moves 7
+meters, but the next should move about 9.9 meters (because that is the
+square root of 98). Why? Remember the formula a² + b² = c² ? Anyway,
+the marbles are clearly to the left of the base station. Perhaps make
+a small square and keep getting bigger until it doesn't come back?
+
+

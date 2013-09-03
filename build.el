@@ -1,10 +1,10 @@
 (require 'org-publish)
 
 (setq org-publish-project-alist
-     '(("veep-chapters"
-        :base-directory "org"
+     '(("veep"
+        :base-directory "~/Google Drive/veep/org"
         :base-extension "org"
-        :publishing-directory "site"
+        :publishing-directory "~/Google Drive/veep/site"
         :recursive t
         :section-numbers nil
         :with-toc nil
@@ -21,6 +21,7 @@
                  <script src='scripts/lib/coffee-script.js' type='text/javascript' charset='utf-8'></script>
                  <link href='styles/main.css' type='text/css' rel='Stylesheet' />
                  <link href='styles/console.css' type='text/css' rel='Stylesheet' />               
+                 <script src='scripts/main.coffee' type='text/coffeescript'></script>
                  <script src='scripts/console.coffee' type='text/coffeescript'></script>
                  <script src='scripts/veeps-rv-1.coffee' type='text/coffeescript'></script>"
 
@@ -29,8 +30,8 @@
         ;;; :publishing-function org-publish-org-to-html
 
         ;; If publishing from a new version of org-mode:
-        :publishing-function org-html-publish-to-html
-        )
+        :publishing-function org-html-publish-to-html)))
+
        ;; ("veep-styles"
        ;;  :base-directory "styles"
        ;;  :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|deb"
@@ -49,7 +50,7 @@
        ;;  :publishing-directory "site/images"
        ;;  :recursive t
        ;;  :publishing-function org-publish-attachment)))
-       ))
+
 (defun babel-a-file (file)
    "Read the contents of a babel file into a temp buffer and then tangle it."
    (when (file-readable-p file)
@@ -64,7 +65,6 @@
       (babel-a-file (car files))
       (babel-all-files (cdr files)))))
 
-(babel-all-files (directory-files "source" t ".*\.org"))
-(consp (cdr '(1)))
+(babel-all-files (directory-files "~/Google Drive/veep/source" t ".*\.org"))
 
 (org-publish-all)

@@ -25,8 +25,6 @@ should repeat the loop... that is, =4=.
 The two commands that are /indented/ will be done repeatedly, and the
 =rv.dock= command, since it is not indented, is not part of the loop.
 
-Good job!
+Good job! I think you are ready for some more interesting missions.
 
 [[file:04-Final-Lab.org][Next]]
-
-

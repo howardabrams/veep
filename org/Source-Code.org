@@ -1,0 +1,10 @@
+#+TITLE:  Contribute?
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@gmail.com
+#+DATE:   [2013-09-01 Sun]
+
+Would you like to help contribute to this project? You can fork and
+update this project on [[http://github.com/howardabrams/veep][GitHub]], however, I would love to get feedback
+on every aspect of this project, including play testing.
+
+Thanks for trying this idea!
