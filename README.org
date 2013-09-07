@@ -8,20 +8,66 @@ This game is solved by entering the right commands into a wheeled
 rover to accomplish missions for exploring virtual worlds. That's
 right, the players learn to program while playing the game.
 
+At least, that is the idea.
+
+* Playing the Game
+
+  If you are interested in playing the game, this site is built and
+  running at [[http://www.geeklet.org/veep][geeklet.org/veep]].
+
+* Building
+
+  I highly doubt that you'll be able to build this project... you see,
+  I'm really into /literate programming/, and this files are built
+  using [[http://www.orgmode.org][org-mode]] for Emacs. Each file either published as an HTML file
+  (in the =site= directory), or /tangled/ as a CoffeeScript file (into
+  =site/scripts=).
+
+  However, the =build.el= file can be used within Emacs to build all
+  of the files, and the =build.sh= script can be used to call Emacs
+  to do this work.
+
+  Yeah, highly specialized, I know, but it sure if sweet once you
+  drank this kool-aid.
+
+* Running
+
+  Once the files have been built, you can have any web server point to
+  the =site= directory, or you can use [[http://www.node.org][NodeJS]] to start up a simple web
+  server:
+
+#+BEGIN_SRC sh
+npm install
+node app.js
+#+END_SRC
+
+* Contributing
+
+  While the game is odd to build, the =.org= files are just text
+  files, so forking and updating is an option.
+
+  Feel free to play the game and send me feedback.
+
 * General Thoughts
 
-  Evaluating the code that is upload in a safe manner is critical for
-  this project. Otherwise, each /mission/ would include a /wrapper/
-  of functions and support, and would be evaluated on the user's
-  computer.
+  Each mission will be clearly explained, but still allow the player
+  to /experiment/ and try out ideas.
 
-  I like the idea of a contained execution of
-  JavaScript/CoffeeScript, but I may want to write it in Python just
-  to level up with it, and then convert it later.
+  To keep each screen terse, but still provide enough information
+  (some of which may include forgotten math), we'll have pop-up dialog
+  boxes with supplementary material.
 
-* Function Commands
+* Programming Notes
 
-* Simple Rover
+  Each /mission/ has a *console* where robot instructions can be
+  entered and evaluated. The results of the mission are displayed in a
+  tabbed section to the right of the console.
 
-  The program that is uploaded needs to return an object that we can
-  then call functions.
+  The [[http://www.coffeescript.org][CoffeeScript]] code entered has access to an =rv= library of
+  functions. To keep the code the player has to enter simple, the
+  library stores the 'state' of the robotic rover, and calling
+  =rv.dock()= summarizes the mission.
+
+  The =console.log()= function is also overloaded, so it can be
+  displayed in a tab.
+
