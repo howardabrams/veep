@@ -1,0 +1,97 @@
+#+TITLE:  First Mission
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-09-05 Thu][2013-09-05 Thu]
+#+TAGS:   veeps coffeescript
+
+#+BEGIN_HTML
+<img src="images/eugene.png" style="float:right; height: 350px"/>
+#+END_HTML
+
+Hi, I'm Eugene, and I have both a problem and a tool you might use to solve
+it. We landed an RV on an exoplanet, and I think it landed in a well or some
+other big hole. We need to see if that is true and if there is any way out.
+
+This particular RV has a device I made to tell you how steep the land is
+in front of the RV.[fn:1] You can call =grade= with the distance to check, and
+it will return the average /grade/ of that spot based on the area around it. A
+grade is measured by how much the RV would go up for each meter it travels.
+
+If it goes up 1 meter while traveling 1 meter (an angle 45°), we say that is
+/100%/. Why, because we always times that fraction by 100. Most of our RVs
+could tip over if they drive on a slope close to 100%, so we don't recommend
+doing that. Less than 80% is good.
+
+By the way, if the RV goes down 1 meter while traveling 1 meter, we say the
+grade is /-100%/. Walls are /500%/, and cliffs are /-500%/.
+
+Our first mission showed a bunch of walls around the RV.
+Your mission is to drive around and scan the area to see if there is a safe
+opening in the walls that we can drive out and explore more of the area.
+This RV[fn:2] has a lot of energy (about 1000 decabrams), so if you can get farther
+away than 20 meters, you've found a gap in the wall.
+
+I typed in the following code that scans a complete circle 3 meters around the
+RV, and then look at the *Log*. Seems that the hole the RV is in, is at least 9
+meters across, since the grade is always pretty small. Looking through the
+*Log* is annoying, do you have any better ideas?[fn:3]
+
+#+BEGIN_SRC js
+  rv.connect("5-75A2-0BB14BD6BC58k")
+
+  for dir in [0..360] by 10
+      rv.left(dir)
+      g = grade(3)
+      console.log(dir, g)
+
+  rv.dock()
+#+END_SRC
+
+* Footnotes
+
+[fn:1] The /Slope Detector/ sensor works like this. It scans a meter wide area
+for the /expected distance/ and the /actual difference/. 
+
+Let's suppose we want to measure the ground 2 meters away. We scan it
+twice. Once at 2 meters and the other at 3.
+
+The sensor sits 2 meters above the ground, so if the ground in front at 2 meters
+away is flat, we scan at 45° and make sure it is √8 or /2.8284271247461903/.
+Why? Because that formula, /a² + b² = c²/ and /2² + 2² = 8/.
+
+Scanning for 3 meters means we move the scanner to an angle of /56.31°/. Why? Because the opposite
+side of our triangle is 3, and our adjacent side is 2, and the /arctangent/ of
+3/2 (written as /atan(1.5)/ is /56.31°/. We expect the scanner to read a
+distance of /3.6 meters/ if the ground is flat.
+
+If the distance less than this, the ground slopes up, and if the distance is
+more, the ground slopes down.
+
+If the ground slopes down so much that we can't get a reading, the scanner
+returns 0. This means it is unsafe to drive the RV there, as it is probably a
+cliff or something.
+
+[fn:2] The specs for the *75A2* are impressive. It has the slope scanner and
+1000 decabrams of energy, but it also has a soil and atmosphere analysis
+engines.
+
+The only thing it doesn't have is a camera, which would have been really
+helpful at this time.
+
+[fn:3] You can have a loop within a loop, like
+
+#+BEGIN_EXAMPLE
+  for dist in [1..10]
+    for dir in [0..360] by 10
+      rv.left(10)  # Turn by 10 more degrees
+      g = grade(dist)
+      # ...
+#+END_EXAMPLE
+
+You can also, only return /interesting/ values using an =if= command:
+
+#+BEGIN_EXAMPLE
+  if g > 300
+    console.log "Wall at", dir, "is", dist
+#+END_EXAMPLE
+

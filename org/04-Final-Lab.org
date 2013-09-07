@@ -20,25 +20,26 @@ as far as it should. Can you figure out where the marbles are?[fn:2]
 
 
 #+BEGIN_SRC js
-  rv.connect("2-875E-65297D640A2D")
+  rv.connect("4-875E-65297D640A2D")
 
   for x in [1 .. 4]
-      rv.forward(_)
+      rv.forward(7)
       rv.left(90)
 
   rv.dock()
 #+END_SRC
 
-[[file:10-Math.org][Next]]
+Do you know /trigonometry/? If you do, you might want to try our
+[[file:04x-Trigonometry.org][Big Extra Credit Project]]. Otherwise, let's start
+our [[file:05-First-Mission.org][First Mission]].
 
 [fn:1] Clearly it will travel 28 meters, since a square has four
 sides and /7 x 4 = 28/.
 
-[fn:2] The trick is to look at the details in the *Engine* tab, as it
-shows what happens with each command you give it. First step moves 7
-meters, but the next should move about 9.9 meters (because that is the
-square root of 98). Why? Remember the formula a² + b² = c² ? Anyway,
-the marbles are clearly to the left of the base station. Perhaps make
-a small square and keep getting bigger until it doesn't come back?
+[fn:2] The trick is to look at the details in the *Engine* tab, as it shows what
+happens with each command you give it. First step moves 7 meters, but the next
+should move about 9.9 meters (because that is the square root of 98). Why?
+Remember the formula /aÂ² + bÂ² = cÂ²/ ?
 
-
+Anyway, the marbles are clearly to the left of the base station. Perhaps make a
+small square and keep getting bigger until it doesn't come back?

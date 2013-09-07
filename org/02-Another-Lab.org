@@ -28,7 +28,7 @@ same path? [fn:2]
 Let's have the RV drive in the largest square we can. The =d= is what
 we call a /variable/. We can set it to a number and then reuse
 it. Change the =_= in this console to a number, but not too large that
-the rover doesn't make it back.
+the rover doesn't make it back.[fn:3]
 
 #+BEGIN_SRC js
   rv.connect("1-875E-65297D640A2D")
@@ -45,7 +45,10 @@ the rover doesn't make it back.
   rv.dock()
 #+END_SRC
 
-To see your work and the path the RV took, click the /Map/ tab.
+To see your work and the path the RV took, click the /Map/ tab.[fn:4] The small
+blue square show where your base station is, and any green line shows the path
+the RV took. If you RV does not make it back to the base station, the path
+information may not be transferred, and then, no path will be shown.
 
 [[file:03-Lab-Programming.org][Next]]
 
@@ -60,26 +63,26 @@ very long arms and a very short connection. Remember this famous
 formula?
 
 #+BEGIN_HTML
-<table width="700"><tr><td>
 <i>   a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>  </i>
-</td><td>
-...can be something like...
-</td><td>
-<i>   3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>  </i>
-</td><td>
-...for a distance of 12
-</td><td></table>
 #+END_HTML
 
+Which can be something like:
+
+#+BEGIN_HTML
+<i>   3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>  </i>
+#+END_HTML
+
+For a distance of 12 (from /3 + 4 + 5/)
+
 In our case, /a/ will be the trip away from the base station (the
-first =forward=), and /c/ will be the return trip (the last
-=forward=). But how much should we give that second =left= turn?
+first =rv.forward=), and /c/ will be the return trip (the last
+=rv.forward=). But how much should we give that second =rv.left= turn?
 The answer is with a little trigonometry.
 
 #+BEGIN_EXAMPLE
   a = 3
   b = 4
-  c = 5
+  c = square_root( a*a + b*b )   # = 5
   t = 180 - atan(a/b)
   console.log("Variable t is", t)
 
@@ -90,9 +93,11 @@ The answer is with a little trigonometry.
   rv.forward(c)
 #+END_EXAMPLE
 
-I guess I should mention that the RV will re-dock if it is within 1
-meter of the base station, so we don't have to worry about being /exact/.
-Alright, I think you know enough to be pretty dangerous. Let's play
-with some rovers is more hostile labs.
+[fn:3] Remember that /d * 4/ must be less than /30/, so /7/ is a good number
+since /7 * 4 = 28/.
 
+Of course, if you really want to get close, /d = 30/4/ or /7.5/.
 
+[fn:4] If you set /d/ to be /7/, then under the *Result* tab, you'll notice
+that the /Distance Traveled/ will be 28. The /Maximum Distance/ is /9.9/
+since that is the square root of /7 * 7 + 7 * 7/ or /98/.

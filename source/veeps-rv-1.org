@@ -17,10 +17,16 @@ letting them get the RVs to talk to each other or something.
   worlds =
           lab:
                   name: "White Lab",
+                  slope: (x, y) -> 0
                   terrain: (x, y) -> 1
-          lab_with_sand:
+          lab_sand:
                   name: "Sandy Lab",
+                  slope: (x, y) -> 0
                   terrain: (x, y) -> if y > 2 then 0.75 else 1
+          p0_hole:
+                  name: "Planet 0BB14BD6BC58",
+                  terrain: (x, y) -> 1
+                  slope: (x, y) -> 0    # Return something more realistic.
 #+END_SRC
 
 * Robotic Vehicles
@@ -32,7 +38,12 @@ letting them get the RVs to talk to each other or something.
   robots =
           "875E":
                   name: "Itsy",
-                  energy: 30
+                  energy: 30,
+                  turtle: 20
+          "75A2":
+                  name: "Feeler",
+                  energy: 300,
+                  turtle: 20
 #+END_SRC
 
 * Missions
@@ -41,9 +52,12 @@ letting them get the RVs to talk to each other or something.
 
 #+BEGIN_SRC coffee
   missions = [
-          [ robots["875E"], worlds["lab"] ],
-          [ robots["875E"], worlds["lab"] ],
-          [ robots["875E"], worlds["lab_with_sand"] ]
+          [ robots["875E"], worlds["lab"] ],      # 0- 01-Meet M
+          [ robots["875E"], worlds["lab"] ],      # 1- 02-Another-Lab
+          [ robots["875E"], worlds["lab"] ],      # 2- 03-Lab-Programming
+          [ robots["875E"], worlds["lab"] ],      # 3- 04x-Trigonometry
+          [ robots["875E"], worlds["lab_sand"] ], # 4- 04-Final-Lab
+          [ robots["75A2"], worlds["p0-hole"] ]   # 5- 05-First-Mission
   ]
 #+END_SRC
 
@@ -117,7 +131,7 @@ letting them get the RVs to talk to each other or something.
                                home.y + home.size/2).
                           left(home.size).up(home.size).
                           right(home.size).down(home.size).
-                          close().text("Base").draw()
+                          close().text("Base").draw().text("Base")
   
                   # Set up the "path" for the rover.
                   turtle.jump(home.x, home.y).pensize(4).penstyle("#0f0").pendown()
@@ -178,7 +192,8 @@ letting them get the RVs to talk to each other or something.
           distance = rv.world.terrain(x,y)
           console.log "Distance", distance, "Direction", direction
           
-          turtle.go(distance * 10.0)   # Update the map
+          # Turtle scaling is a factor stored in the 'robot'
+          turtle.go(distance * rv.robot.turtle)   # Update the map
   
           rv.traveled += distance      # Store the total amount traveled.
           rv.x += Math.cos(direction) * distance
@@ -236,20 +251,41 @@ letting them get the RVs to talk to each other or something.
 
 #+BEGIN_SRC coffee
   left = (degrees) ->
-      rv.direction += degrees
-      turtle.turn(- degrees)
-      debug "Turned left", degrees, "° - Current:", rv.direction
-
+          turtle.turn(- degrees)
+          rv.direction += degrees
+          rv.direction = normalize(rv.direction)
+          debug "Turned left", degrees, "° - Current:", rv.direction
+  
   right = (degrees) ->
-      rv.direction -= degrees
-      turtle.turn(degrees)
-      debug "Turned right", degrees, "° - Current:", rv.direction
+          turtle.turn(degrees)
+          rv.direction -= degrees
+          rv.direction = normalize(rv.direction)
+          debug "Turned right", degrees, "° - Current:", rv.direction
+  
+  normalize = (current) ->
+      while current >= 360
+          current -= 360
+      while current <= -360
+          current += 360
+      current        
 #+END_SRC
 
 * Math Function Helpers
 
   Would be nice if we could wrap the trigonometry functions in
   /non-radians/:
+
+** Square Root
+
+   Would spelling things out be nicer?
+
+#+BEGIN_SRC coffee
+square_root = (r) ->
+    Math.sqrt(r)
+
+square = (x) ->
+    x * x
+#+END_SRC
 
 ** Sine, Cosine and Tangent
 

@@ -1,0 +1,99 @@
+#+TITLE:  Extra Credit with Trigonometry
+#+AUTHOR: Howard Abrams
+#+EMAIL:  howard.abrams@workday.com
+#+DATE:   [2013-08-27 Tue]
+#+TAGS:   veeps coffeescript
+
+Oh, so you decided to work on the extra credit assignment? Good for you. To do
+this assignment, you need to know a bit about /trigonometry/. If you don't,
+just skip ahead to your [[file:05-First-Mission.org][First Mission]].
+
+In this console, we are working with an RV in a lab with a large grid drawn on
+the floor. We put a flag at some spots on the floor, and your job is to
+move the RV to pick up each flag.
+
+Here is a view looking down at the RV in the lab.
+
+(Draw Grid)
+
+The Base is at /(0, 0)/ and if you move the RV /forward/ 1 meter, it will go
+"up" to /(0, 1)/. Turn to the right 90°, and then go forward 2 meters, and the
+RV will be at /(2, 1)/. Get it?
+
+If you start at the Base, how would you drive the RV to get a flag at /(3, 3)/?
+Of course, looking at the diagram, the RV should turn =rv.right(45)= and then move
+=rv.forward(4.24264)=. Why? Because of that old formula /a² + b² = c²/, and since
+both /a/ and /b/ are /3/, we want to move forward /√18/.
+
+(Draw Grid with Triangle at 3,3)
+
+If you start again at the Base, how would you drive the RV to get a flag
+sitting at /(3, 4)/?
+
+(Draw Grid with Triangle from 3, 4)
+
+Since /3² + 4² = 25/, and /√25 = 5/, we need to move =rv.forward(5)=, but what is the
+angle? As you can see in this drawing, we want to find the angle written as
+/a/. We can use the /arctangent/ of the length of the /opposite/ side divided by
+the /adjacent/ side:[fn:1]
+
+#+BEGIN_EXAMPLE
+right( atan(3/4) )  # Turns RV 36.87°
+#+END_EXAMPLE
+
+The *trick* is when the RV is at /(3, 4)/ and pointing at /36°/, and you need
+to tell the RV to go to /(-2, 5)/.[fn:2]
+
+(Draw Grid with two locations and a triangle between them)
+
+Can you pick up the following flags?
+
+  - /(4, 3)/
+  - /(-2, 5)/
+  - /(1, -3)/
+
+I've got the first one done already:
+
+#+BEGIN_SRC js
+  rv.connect("3-875E-65297D640A2D")
+
+  # First Flag
+  rv.left( atan(4/3) )
+  rv.forward( square_root( square(3) + square(4) ) )
+  rv.grabFlag()
+
+  # Second Flag
+
+  # Third Flag
+
+  rv.dock()
+#+END_SRC
+
+[[file:05-First-Mission.org][Next]]
+
+* Footnotes
+
+[fn:1] Why yes, we could use either the /arcsine/ or the /arc cosine/, since
+all three of these calculations are the same:
+
+  - =asin(3/5)= = 36.86989764584402
+  - =acos(4/5)= = 36.86989764584401
+  - =atan(3/4)= = 36.86989764584402
+
+It just depends on which sides you use!
+
+[fn:2] It actually isn't that bad. You could turn =rv.left(36)= to face the RV
+straight up, and then do the calculations.
+
+To figure out /x/, just calculate the distance from /3/ to /-2/ ... which is
+/5/. Over 5 and up 1 is a /distance away/ of √26 and we need to turn =rv.left= 
+=atan(5/1)= (about 78.70°), so our commands would be:
+
+#+BEGIN_EXAMPLE
+rv.left( atan(5/1) + atan(3/4) )
+rv.forward( square_root(26) )
+rv.grabFlag()
+#+END_EXAMPLE
+
+
+

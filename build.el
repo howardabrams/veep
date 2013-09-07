@@ -1,7 +1,7 @@
 (require 'org-publish)
 
-(setq org-publish-project-alist
-     '(("veep"
+(add-to-list 'org-publish-project-alist
+     '("veep"
         :base-directory "~/Google Drive/veep/org"
         :base-extension "org"
         :publishing-directory "~/Google Drive/veep/site"
@@ -30,7 +30,7 @@
         ;;; :publishing-function org-publish-org-to-html
 
         ;; If publishing from a new version of org-mode:
-        :publishing-function org-html-publish-to-html)))
+        :publishing-function org-html-publish-to-html))
 
        ;; ("veep-styles"
        ;;  :base-directory "styles"

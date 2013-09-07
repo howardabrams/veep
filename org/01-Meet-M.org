@@ -1,4 +1,4 @@
-#+TITLE:  First Mission
+#+TITLE:  Meet M and Visit our Lab
 #+AUTHOR: Howard Abrams
 #+EMAIL:  howard.abrams@workday.com
 #+DATE:   [2013-08-05 Mon][2013-08-05 Mon]
@@ -21,8 +21,8 @@ its base station 10 meters, and then drive backwards 10 meters
 back. This is just to get your feet wet.
 
 Here is a console, and I've already typed the code that makes up the
-mission. Pretty simple since I have a commands called =forward= and
-=backward=:
+mission. Pretty simple since I have a commands called =rv.forward= and
+=rv.backward=:
 
 #+BEGIN_HTML
 <div style="clear:both"></div>

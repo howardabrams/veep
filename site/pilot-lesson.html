@@ -1,108 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>First Mission</title>
-<!-- 2013-08-30 Fri 22:33 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="First Mission"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-08-05"/>
+<meta name="author" content="Howard Abrams"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
   .title  { text-align: center; }
-  .todo   { font-family: monospace; color: red; }
+  .todo   { color: red; }
   .done   { color: green; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
   }
-  pre.src {
-    position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
-    padding: 3px;
-    border: 1px solid black;
-  }
-  pre.src:hover:before { display: inline;}
-  pre.src-sh:before    { content: 'sh'; }
-  pre.src-bash:before  { content: 'sh'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-R:before     { content: 'R'; }
-  pre.src-perl:before  { content: 'Perl'; }
-  pre.src-java:before  { content: 'Java'; }
-  pre.src-sql:before   { content: 'SQL'; }
-
-  table { border-collapse:collapse; }
-  td, th { vertical-align:top;  }
-  th.right  { text-align: center;  }
-  th.left   { text-align: center;   }
-  th.center { text-align: center; }
-  td.right  { text-align: right;  }
-  td.left   { text-align: left;   }
-  td.center { text-align: center; }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
   dt { font-weight: bold; }
-  .footpara:nth-child(2) { display: inline; }
-  .footpara { display: block; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
     background: #ffffcc;
   }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
   textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
   /*]]>*/-->
 </style>
-
-                 <link href='styles/ui-darkness/jquery-ui.css' rel='Stylesheet'/>
-                 <script src='scripts/lib/underscore-min.js' type='text/javascript'></script>
-                 <script src='scripts/lib/jquery-1.9.1.js' type='text/javascript'></script>
-                 <script src='scripts/lib/jquery-ui.js'></script>
-                 <script src='scripts/lib/pen_min.js'></script>
-                 <script src='scripts/lib/coffee-script.js' type='text/javascript' charset='utf-8'></script>
-                 <link href='styles/main.css' type='text/css' rel='Stylesheet' />
-                 <link href='styles/console.css' type='text/css' rel='Stylesheet' />               
-                 <script src='scripts/console.coffee' type='text/coffeescript'></script>
-                 <script src='scripts/veeps-rv-1.coffee' type='text/coffeescript'></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012  Free Software Foundation, Inc.
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -143,10 +106,15 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+
 </head>
 <body>
+
+
 <div id="content">
 <h1 class="title">First Mission</h1>
+
+
 <img src="images/m.png" style="float:right; height: 350px"/>
 
 <p>
@@ -156,33 +124,30 @@ mind where you can tell it what to do. We call the window a <i>console</i>
 and the commands we want it to do is <i>code</i> and a mission to
 accomplish is a <i>program</i>. Go it?
 </p>
-
 <p>
 Good. I see this will be easy.
 </p>
-
 <p>
 The first mission is pretty simple. We'll have the RV move out from
 its base station 10 meters, and then drive backwards 10 meters
 back. This is just to get your feet wet.
 </p>
-
 <p>
 Here is a console, and I've already typed the code that makes up the
 mission. Pretty simple since I have a commands called <code>forward</code> and
 <code>backward</code>:
 </p>
 
+
 <div style="clear:both"></div>
 
-<div class="org-src-container">
 
-<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"0-875E-65297D640A2D"</span>)
+<pre class="example">rv.connect("0-875E-65297D640A2D")
 rv.forward(4)
 rv.backward(4)
 rv.dock()
 </pre>
-</div>
+
 
 <p>
 First, you'll notice that everything starts with <code>rv</code>. That shows you what I
@@ -191,66 +156,61 @@ your console with a particular RV. Don't worry about the garbely-gook
 in the quotes, that is just the key to identify a particular RV. That
 one is in a particular lab with a nice, clear floor.
 </p>
-
 <p>
 We move the RV forward 4 meters, and then backwards 4 meters. Once it
 is done, we have it attach itself back to the base station. If it
 doesn't have that command, it can be communicated and becomes lost.
 </p>
-
 <p>
 In the lab, it isn't so much of a problem, since the technicians
 there, we just pick it up and re-connect it. However, if your RV is
 roving around a dustball around Alpha Centaurii, we have to send a
-new ship through the right worm hole&#x2026; at least, until the
+new ship through the right worm hole&hellip; at least, until the
 government agencies decide that worm hold travel is safe for humans.
 </p>
 
-<hr  />
+<hr/>
 
 <p>
 Let's try another lab mission. The wheels on most RVs are geared
 weirdly, and use more energy going backwards than forwards. Each RV
 has only so much energy before it needs to dock and recharge.
 </p>
-
 <p>
 This console connects to an RV with 30 milliblahs of energy. Moving
 forward takes 1 of these. Yeah, we built these robots to make the
 math easy. Ha ha!
 </p>
-
 <p>
 See how far away you can move the RV with that limited amount of energy.
 The <code>rv.left</code> and <code>rv.right</code> take a number of degrees to turn the
 RV. So saying <code>rv.left(90)</code> will tell the RV to turn to the left
-90Â°. Make sense?
+90°. Make sense?
 </p>
 
-<div class="org-src-container">
 
-<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"1-875E-65297D640A2D"</span>);
+
+<pre class="example">rv.connect("1-875E-65297D640A2D");
 rv.forward(10)
 rv.left(180)
 rv.forward(10)
 rv.dock()
 </pre>
-</div>
+
 
 <p>
-The easiest option is to go forward 30 meters and turn around 180Â°,
+The easiest option is to go forward 30 meters and turn around 180°,
 but what would be the fewest number of turns without following in the
 same steps? Sure, a triangle would work. What would be the best
 triangle path that got your the furthest away?
 </p>
-
 <p>
 Here is the console to a lab RV with my best solution:
 </p>
 
-<div class="org-src-container">
 
-<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"2-875E-65297D640A2D"</span>);
+
+<pre class="example">rv.connect("2-875E-65297D640A2D");
 
 rv.forward(10)
 rv.left(90)
@@ -260,9 +220,10 @@ rv.forward(11)
 
 rv.dock()
 </pre>
-</div>
 
-<hr  />
+
+
+<hr/>
 
 <p>
 Here is a console to another RV in a lab, but this warehouse isn't
@@ -270,7 +231,6 @@ all nice, smooth cement. This one is partly covered in loose
 sand. This means, that the RV slips, so while you may say, move
 forward 1 meter, it doesn't really travel that far.
 </p>
-
 <p>
 This is important when trying to make sure you have enough energy to
 get back to the base station. Let's start by moving forward 14
@@ -278,28 +238,28 @@ meters, turn completely around and move back 14 meters. How far do
 you think we will have traveled?
 </p>
 
-<div class="org-src-container">
 
-<pre class="src src-js">rv.connect(<span style="color: #70c0b1;">"3-875E-65297D640A2D"</span>);
+
+<pre class="example">rv.connect("3-875E-65297D640A2D");
 rv.forward(14);
 rv.left(180);
 rv.forward(14);
-<span style="color: #b9ca4a;">return</span> rv.dock();
+return rv.dock();
 </pre>
-</div>
 
 
-<link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
-<script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
-<script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
-<script src="scripts/lib/jquery-ui.js"></script>
-<script src="scripts/lib/pen_min.js"></script>
-<script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
-<link href="styles/main.css" type="text/css" rel="Stylesheet" />
-<link href="styles/console.css" type="text/css" rel="Stylesheet" />
 
-<pre class="example">
-&lt;link href="http://code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.css" rel="Stylesheet"/&gt;
+  <link href="styles/ui-darkness/jquery-ui.css" rel="Stylesheet"/>
+  <script src="scripts/lib/underscore-min.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-1.9.1.js" type="text/javascript"></script>
+  <script src="scripts/lib/jquery-ui.js"></script>
+  <script src="scripts/lib/pen_min.js"></script>
+  <script src="scripts/lib/coffee-script.js" type="text/javascript" charset="utf-8"></script>
+  <link href="styles/main.css" type="text/css" rel="Stylesheet" />
+  <link href="styles/console.css" type="text/css" rel="Stylesheet" />
+
+
+<pre class="example">&lt;link href="http://code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.css" rel="Stylesheet"/&gt;
 &lt;script src="http://underscorejs.org/underscore-min.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"&gt;&lt;/script&gt;
@@ -308,13 +268,17 @@ rv.forward(14);
 &lt;link href="styles/console.css" type="text/css" rel="Stylesheet" /&gt;
 </pre>
 
-<pre class="example">
-&lt;script src="scripts/console.js" type="text/javascript"&gt;&lt;/script&gt;
+
+
+<pre class="example">&lt;script src="scripts/console.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;script src="scripts/veeps-rv-1.js" type="text/javascript"&gt;&lt;/script&gt;
 </pre>
 
-<script src="scripts/console.coffee" type="text/coffeescript"></script>
-<script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+
+  <script src="scripts/console.coffee" type="text/coffeescript"></script>
+  <script src="scripts/veeps-rv-1.coffee" type="text/coffeescript"></script>
+
 </div>
+
 </body>
 </html>

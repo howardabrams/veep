@@ -5,14 +5,14 @@
 #+TAGS:   veeps coffeescript
 
 That was a lot of typing in that previous console.  This next console
-shows you how to repeat actions, using a command called =for..in=. 
+shows you how to repeat actions, using a command called =for..in=.[fn:1]
 
-In this case, we will repeat moving =forward= and turning to the
-=left=. You just need to replace the =_= with the number of times we
+In this case, we will /repeat/ moving =rv.forward= and turning to the
+=rv.left=. You just need to replace the =_= with the number of times we
 should repeat the loop... that is, =4=.
 
 #+BEGIN_SRC js
-  rv.connect("1-875E-65297D640A2D")
+  rv.connect("2-875E-65297D640A2D")
 
   d = 7
   for c in [1 .. _]
@@ -25,6 +25,69 @@ should repeat the loop... that is, =4=.
 The two commands that are /indented/ will be done repeatedly, and the
 =rv.dock= command, since it is not indented, is not part of the loop.
 
-Good job! I think you are ready for some more interesting missions.
+Good job! Would you like some extra credit and make a triangle[fn:2], or
+something even more complicated like a pentagon,[fn:3] or even a
+triacontagon.[fn:4] You can also just move on to the next lab?
 
-[[file:04-Final-Lab.org][Next]]
+[[file:04-Final-Lab.org][Next Lab]]
+
+* Footnotes
+
+[fn:1] If you are technically inclined, the commands we use to control our RVs
+are built with a computer language called CoffeeScript. It is simple to use,
+but what you need to remember is:
+
+  - Whitespace matters at the beginning of a line.
+  - Anything following a =#= are ignored.
+  - It acts like JavaScript (but that fact only matters now if you already know
+    that language).
+  - You can read more at www.coffeescript.org
+
+[fn:2] Since each time through the loop is /one side of a polygon/, we could
+make a triangle. All of the angles must add up to 180°, so
+each angle on the inside is /180 ÷ 3/ or /60/. But our RV is pointing /outside/
+of the triangle, and we need the /supplementary adjacent/ angle:
+
+(Make diagram of equilateral triangle with arrow pointing up)
+
+We just have to subtract our 60 from 180 to make a triangle. We need to turn
+/180 - 60/ or /120/.
+
+#+BEGIN_EXAMPLE
+s = 3              # The number of sides
+a = 120            # Angle to turn
+for c in [1 .. s]
+    rv.forward(5)
+    rv.left(a)
+#+END_EXAMPLE
+
+[fn:3] What about having the RV create a /pentagon/ with 5 sides? If you knew
+the sum of the degrees for all five angles, we could just divide by 5. There is
+a little formula you can use to find the /inner angles/: 
+
+/(s - 2) * 180/
+
+Where /s/ is the number of sides. For a triangle, where /s/ is 3, it ends up
+with 180°. That works.
+
+For a square, with 4 sides, we have: /(4 - 2) * 180 = 360/, and since 
+/360 ÷ 4 = 90/, that works too. I will let you do the math for a pentagon.
+
+[fn:4] With only 30 decabrams of energy, the biggest polygon we could make is a
+30-sided one called a /triacontagon/. Hrm. If you don't have a calculator, try
+30 loops with an angle of 12°, but make sure you only move 1 meter at a time,
+or we'll run out of energy and stall. Of course, on the map, is looks more like
+circle!
+
+Here is the program for any polygon
+
+#+BEGIN_EXAMPLE
+s = 5                  # The number of sides
+a = ((s-2) * 180 / s)  # The inside angle
+for c in [1 .. s]
+    rv.forward(5)
+    rv.left(180 - a)   # Turn from the outside
+#+END_EXAMPLE
+
+But this is all fun and games with the *Map* section. We have some serious
+exploration of exoplanets ahead.
