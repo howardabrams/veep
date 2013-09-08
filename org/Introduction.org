@@ -1,4 +1,4 @@
-#+TITLE:  Welcome to VEEP
+#+TITLE:  Welcome to the VEEP
 #+AUTHOR: Howard Abrams
 #+EMAIL:  howard.abrams@workday.com
 #+DATE:   [2013-09-01 Sun]
