@@ -4,6 +4,10 @@
 #+DATE:   [2013-08-27 Tue]
 #+TAGS:   veeps coffeescript
 
+#+BEGIN_HTML
+<img src="images/prof.png" style="float:right; height:350px;"/>
+#+END_HTML
+
 Oh, so you decided to work on the extra credit assignment? Good for you. To do
 this assignment, you need to know a bit about /trigonometry/. If you don't,
 just skip ahead to your [[file:05-First-Mission.org][First Mission]].
@@ -14,37 +18,51 @@ move the RV to pick up each flag.
 
 Here is a view looking down at the RV in the lab.
 
-(Draw Grid)
+#+BEGIN_HTML
+<img src="images/diagram-grid.png" width="300"/>
+
+<img src="images/diagram-3-by-3.png" style="float:right; width:300px; clear:both"/>
+#+END_HTML
 
 The Base is at /(0, 0)/ and if you move the RV /forward/ 1 meter, it will go
 "up" to /(0, 1)/. Turn to the right 90°, and then go forward 2 meters, and the
 RV will be at /(2, 1)/. Get it?
 
-If you start at the Base, how would you drive the RV to get a flag at /(3, 3)/?
-Of course, looking at the diagram, the RV should turn =rv.right(45)= and then move
-=rv.forward(4.24264)=. Why? Because of that old formula /a² + b² = c²/, and since
-both /a/ and /b/ are /3/, we want to move forward /√18/.
+-------------
 
-(Draw Grid with Triangle at 3,3)
+If you start at the Base, how would you drive the RV /directly/ to get
+a flag at /(3, 3)/?  Of course, looking at the diagram on the right,
+the RV should turn =rv.right(45)= and then move =rv.forward(4.24264)=. 
+Why? Because of that old formula, /a² + b² = c²/ [fn:3], and since
+both /a/ and /b/ are /3/, we want to move forward /√18/... which is /4.24/.
 
-If you start again at the Base, how would you drive the RV to get a flag
-sitting at /(3, 4)/?
+------------
 
-(Draw Grid with Triangle from 3, 4)
+#+BEGIN_HTML
+<img src="images/diagram-3-by-4.png" style="float:right; width:300px; clear:both"/>
+#+END_HTML
+
+If you start again at the Base, how would you drive the RV directly to get a flag
+sitting at /(3, 4)/? 
 
 Since /3² + 4² = 25/, and /√25 = 5/, we need to move =rv.forward(5)=, but what is the
-angle? As you can see in this drawing, we want to find the angle written as
-/a/. We can use the /arctangent/ of the length of the /opposite/ side divided by
+angle? As you can see in the drawing on the right, we want to find the angle 
+at the bottom. We can use the /arctangent/ of the length of the /opposite/ side divided by
 the /adjacent/ side:[fn:1]
 
 #+BEGIN_EXAMPLE
 right( atan(3/4) )  # Turns RV 36.87°
 #+END_EXAMPLE
 
-The *trick* is when the RV is at /(3, 4)/ and pointing at /36°/, and you need
-to tell the RV to go to /(-2, 5)/.[fn:2]
+------------
 
-(Draw Grid with two locations and a triangle between them)
+Now, for a difficult problem. What if the RV is still at /(3, 4)/ and
+still pointing at /36°/, and you need to tell the RV to go to /(-2,
+5)/? [fn:2]
+
+#+BEGIN_HTML
+<img src="images/diagram-2-by-5.png"/>
+#+END_HTML
 
 Can you pick up the following flags?
 
@@ -82,18 +100,30 @@ all three of these calculations are the same:
 
 It just depends on which sides you use!
 
-[fn:2] It actually isn't that bad. You could turn =rv.left(36)= to face the RV
-straight up, and then do the calculations.
+[fn:2] The triangle from /3/ to /-2/ is over /5/ and up 1 for a
+/distance/ of /√26/. 
 
-To figure out /x/, just calculate the distance from /3/ to /-2/ ... which is
-/5/. Over 5 and up 1 is a /distance away/ of √26 and we need to turn =rv.left= 
-=atan(5/1)= (about 78.70°), so our commands would be:
+If your turn the RV =rv.left(36)=, it will face the RV
+straight up, and we need to keep turning =rv.left= =atan(5/1)=
+(about 78.70°), so our commands could be:
 
 #+BEGIN_EXAMPLE
 rv.left( atan(5/1) + atan(3/4) )
 rv.forward( square_root(26) )
 rv.grabFlag()
 #+END_EXAMPLE
+
+[fn:3] The formula, /a² + b² = c²/, only works for /right
+triangles/ with one corner being /90°/. It says that if you square
+both "legs" of the triangle and add them together, it will equal the
+square of the long side (called the /hypotenuse/).
+
+For example, if one side is /3/ and other the short side is /4/,
+the formula shows that hypotenuse is /5/:
+
+#+BEGIN_HTML
+<img src="images/diagram-pyth-formula.png"/>
+#+END_HTML
 
 
 

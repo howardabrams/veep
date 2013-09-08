@@ -9,6 +9,12 @@ body {
 
 p {
     max-width: 1000px;
+    line-height: 200%;
+}
+
+hr {
+    margin: 20px;
+    border-color: #666;
 }
 
 i {

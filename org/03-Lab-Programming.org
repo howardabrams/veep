@@ -48,7 +48,9 @@ make a triangle. All of the angles must add up to 180°, so
 each angle on the inside is /180 ÷ 3/ or /60/. But our RV is pointing /outside/
 of the triangle, and we need the /supplementary adjacent/ angle:
 
-(Make diagram of equilateral triangle with arrow pointing up)
+#+BEGIN_HTML
+<img src="images/diagram-outside-angle.png"/>
+#+END_HTML
 
 We just have to subtract our 60 from 180 to make a triangle. We need to turn
 /180 - 60/ or /120/.

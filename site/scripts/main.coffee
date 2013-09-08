@@ -11,5 +11,5 @@ $ ->
         
         $("a.footref").each ->
                 id = $(this).attr('href').replace(".", "-")
-                $(this).click ->
+                $(this).html("★").click ->
                         $(id).dialog("open")

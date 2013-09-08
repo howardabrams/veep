@@ -29,9 +29,9 @@ as far as it should. Can you figure out where the marbles are?[fn:2]
   rv.dock()
 #+END_SRC
 
-Do you know /trigonometry/? If you do, you might want to try our
-[[file:04x-Trigonometry.org][Big Extra Credit Project]]. Otherwise, let's start
-our [[file:05-First-Mission.org][First Mission]].
+Do you know /trigonometry/? If you do, you might want to try going
+over to Professor Byrd's lab for a [[file:04x-Trigonometry.org][Big Extra Credit
+Project]]. Otherwise, let's start our [[file:05-First-Mission.org][First Mission]].
 
 [fn:1] Clearly it will travel 28 meters, since a square has four
 sides and /7 x 4 = 28/.
