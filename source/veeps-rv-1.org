@@ -37,27 +37,94 @@ letting them get the RVs to talk to each other or something.
 #+BEGIN_SRC coffee
   robots =
           "875E":
-                  name: "Itsy",
-                  energy: 30,
+                  name: "Itsy"
+                  energy: 30
                   turtle: 20
           "75A2":
-                  name: "Feeler",
-                  energy: 300,
+                  name: "Feeler"
+                  energy: 300
                   turtle: 20
 #+END_SRC
 
 * Missions
 
-  Each "mission" associates a rover and a world.
+** Mission Types
+
+  Each mission must be accomplished, and we want to be able to tell
+  the player how they did. 
+
+*** Return to Base
+
+    The simplest type of mission requires returning back to the base
+    station.
+
+#+BEGIN_SRC coffee
+  missionReturnToBase = (rv) -> 
+          assert( "Return to base", isAtBase(rv.x, rv.y),
+                  "Lost contact at: " + sround(rv.x) + ", " + sround(rv.y))
+#+END_SRC
+
+*** Collect Specimens
+
+    This mission type is called with details of where things should
+    be "grabbed", and it returns a function that can be called.
+
+#+BEGIN_SRC coffee
+  missionCollection = (type, locations) ->
+      (rv) ->
+          console.log "Collected", type, rv.collection[type]
+          stuff = rv.collection[type]   # The stuff that was collected
+  
+          if stuff
+                  successful = true
+                  # We do a 'real loop' so that I can assert each aspect
+                  # of the mission to collect something
+                  for spot in locations
+                          partly = _.any( isClose(s, spot) for s in stuff )
+                          assert "Collect #{type} at #{spot[0]}, #{spot[1]}", partly
+                          successful = successful and partly
+                  successful
+          else
+                  false
+#+END_SRC
+
+** Rover Missions
+
+  Each "mission" associates a rover and a world and a call to a
+  mission type.
 
 #+BEGIN_SRC coffee
   missions = [
-          [ robots["875E"], worlds["lab"] ],      # 0- 01-Meet M
-          [ robots["875E"], worlds["lab"] ],      # 1- 02-Another-Lab
-          [ robots["875E"], worlds["lab"] ],      # 2- 03-Lab-Programming
-          [ robots["875E"], worlds["lab"] ],      # 3- 04x-Trigonometry
-          [ robots["875E"], worlds["lab_sand"] ], # 4- 04-Final-Lab
-          [ robots["75A2"], worlds["p0-hole"] ]   # 5- 05-First-Mission
+          {  # 0- 01-Meet M
+                  robot: robots["875E"]
+                  world: worlds["lab"]
+                  success: missionReturnToBase
+          },
+          {  # 1- 02-Another-Lab
+                  robot: robots["875E"]
+                  world: worlds["lab"]
+                  success: missionReturnToBase
+          },
+          {  # 2- 03-Lab-Programming
+                  robot: robots["875E"]
+                  world: worlds["lab"]
+                  success: missionReturnToBase
+          },
+          {  # 3- 04x-Trigonometry
+                  robot: robots["875E"]
+                  world: worlds["lab"]
+                  success: missionCollection('flag', [ [4, 3], [-2, 5], [1, -3] ])
+          },
+          {  # 4- 04-Final-Lab
+                  robot: robots["875E"]
+                  world: worlds["lab_sand"]
+                  success: missionReturnToBase
+          },
+          {  # 5- 05-First-Mission
+                  robot: robots["75A2"]
+                  world: worlds["p0-hole"]
+                  success: missionReturnToBase
+          }
   ]
 #+END_SRC
 
@@ -81,42 +148,33 @@ letting them get the RVs to talk to each other or something.
   turtle = null
 #+END_SRC
 
-* Log Message
-
-  I would like to just use =console.log=, but it might be better to
-  have some internal logging functionality for now.
-
-#+BEGIN_SRC coffee
-  log = (parts...) ->
-          rv.log.push( parts.join(" ") )
-  
-  debug = (parts...) ->
-          rv.debug.push( parts.join(" ") )
-#+END_SRC
-
-* Connect
+* Start with a Connect
 
   The connect command is essentially a no-op, but we can use it as an
   initialization and setup command.
 
 #+BEGIN_SRC coffee
   connect = (serial) ->
-          [mission, rover, extra, id] = serial.split("-")
-          if ! id
-                  id = 0
-          # console.log(id, mission, rover, extra)
-          if missions[mission] and robots[rover]
+          [number, rover, extra, id] = serial.split("-")
+          if not id then id = 0
+  
+          mission = missions[number]
+          # console.log(id, number, rover, extra)
+          if mission
                   rv =
-                          robot: missions[mission][0],
-                          world: missions[mission][1],
+                          robot: mission.robot,
+                          world: mission.world,
+                          mission: mission.success,
                           x: 0, y: 0, z: 0,
                           direction: 0,
                           distance: 0, maxdist: 0,
                           traveled: 0,
                           energy_used: 0,
-                          energy: missions[mission][0].energy,
-                          log: [  'Beginning Mission: ' + ( parseInt(mission) + 1) ],
+                          energy: mission.robot.energy,
+                          collection: {},
+                          log: [  'Beginning Mission: ' + ( parseInt(number) + 1) ],
                           debug: []
+                          results: []
                   turtle = new Pen("rover-map-" + id)
   
                   # ctx.clearRect(0,0,canvas.width,canvas.height)
@@ -127,8 +185,7 @@ letting them get the RVs to talk to each other or something.
                           
                   # Draw a "home" base as a little square
                   turtle.penstyle("#0ff").pensize(2).
-                          jump(home.x + home.size/2,
-                               home.y + home.size/2).
+                          jump(home.x + home.size/2, home.y + home.size/2).
                           left(home.size).up(home.size).
                           right(home.size).down(home.size).
                           close().text("Base").draw().text("Base")
@@ -149,23 +206,25 @@ letting them get the RVs to talk to each other or something.
 #+BEGIN_SRC coffee
   dock = ->
     if rv
-      if rv.x < 1 and rv.y < 1
-        # turtle.close()
-        turtle.draw()
+      turtle.draw()
+      if isAtBase(rv.x, rv.y)
         log("Re-Docked.")
       else
         log("RV is not at base station.")
   
-      results =
+      completion = checkAssignment(rv)
+
+      result_status =
           Name: rv.robot.name
           Initial_Energy: rv.robot.energy
           Energy_Used: rv.energy_used
           Energy_Left: rv.energy
-          Current_Direction: rv.direction.toFixed(2)
-          Maximum_Distance: rv.maxdist.toFixed(2)
-          Distance_Traveled: rv.traveled.toFixed(2)
-  
-      [ results, rv.log, rv.debug ]
+          Current_Direction: sround rv.direction
+          Maximum_Distance:  sround rv.maxdist
+          Distance_Traveled: sround rv.traveled
+          Mission_Results:   rv.results
+
+      [ result_status, rv.log, rv.debug, completion ]
 #+END_SRC
 
 * Forward
@@ -189,6 +248,8 @@ letting them get the RVs to talk to each other or something.
   
           # The 'distance' is the amount the rover can travel for a
           # particular spot in this world...
+          console.log("Move RV", rv)
+
           distance = rv.world.terrain(x,y)
           console.log "Distance", distance, "Direction", direction
           
@@ -234,7 +295,6 @@ letting them get the RVs to talk to each other or something.
           throw "Can't move without connection." if not rv
           move(pulses, rv.direction * (Math.PI/180), 1)
 #+END_SRC
-
 * Backward
 
   This will just call the =move= but with an opposite radian direction.
@@ -268,6 +328,80 @@ letting them get the RVs to talk to each other or something.
       while current <= -360
           current += 360
       current        
+#+END_SRC
+
+* Grab Something
+
+#+BEGIN_SRC coffee
+  grab = (t) ->
+          if ! rv.collection[t]
+                  rv.collection[t] = []
+          rv.collection[t].push( [rv.x, rv.y] )
+#+END_SRC
+
+* Check Assignment
+
+  Each mission must be /accomplished/, and for that, we need to
+  compare the final results with those goals.
+
+#+BEGIN_SRC coffee
+  assert = (msg, cond, details...) ->
+          if cond
+                  result msg, "- Accomplished"
+          else
+                  result msg, "- Failed<br/>", details
+          cond
+  
+  # String::endsWith = (str) -> this.slice(-str.length) == str
+  
+  isAtBase = (x, y) -> x < 1 and y < 1 and x > -1 and y > -1
+  
+  isClose = (spot1, spot2) ->
+          console.log("isClose", spot1, spot2)
+          sround(spot1[0]) is sround(spot2[0]) and sround(spot1[1]) is sround(spot2[1])
+  
+  checkAssignment = (rv) ->
+    console.log "Checking", rv.mission, rv.mission(rv)
+#+END_SRC
+
+* Log Messages
+
+  We store our log messages in two arrays. Each function can take
+  multiple entries that will be joined together separated by spaces.
+
+#+BEGIN_SRC coffee
+  log = (parts...) -> rv.log.push parts.join(" ")
+  debug = (parts...) -> rv.debug.push parts.join(" ")
+#+END_SRC
+
+** Mission Messages
+
+   The end results of missions are stored in a different array and
+   called with the =result= function.
+
+#+BEGIN_SRC coffee
+  result = (parts...) -> rv.results.push parts.join(" ")
+#+END_SRC
+
+* Utility Functions
+
+  General functions that we need.
+
+** String Rounding
+
+   Assuming that we want our values to be "close enough" and readable,
+   the following fixes a decimal number to 2 decimal places, and if
+   the value can be displayed as an integer, it will:
+
+#+BEGIN_SRC coffee
+  sround = (x) ->
+          s = x.toFixed(2)
+          if s.slice(-3) is ".00"
+                  s.slice(0, -3)
+          else if s.slice(-1) is "0"
+                  s.slice(0, -1)
+          else
+                  s
 #+END_SRC
 
 * Math Function Helpers
@@ -334,21 +468,45 @@ atan = (value) ->
   functions to something else:
 
 #+BEGIN_SRC coffee
-  if (typeof(window) != "undefined")  
-          window['rv'] =
-                  connect:  connect,
-                  forward:  forward,
-                  backward: backward,
-                  left:     left,
-                  right:    right,
-                  dock:     dock
+  if window
+          window.connect  = connect
+          window.forward  = forward
+          window.backward = backward
+          window.left     = left
+          window.right    = right
+          window.grab     = grab
+          window.dock     = dock
+  
+          window.flag     = "flag"
+          
+          window.square_root = square_root
+          window.square   = square
+          window.sin      = sin
+          window.cos      = cos
+          window.tan      = tan
+          window.asin     = asin
+          window.acos     = acos
+          window.atan     = atan
+  
   else
           exports.connect  = connect
           exports.forward  = forward
           exports.backward = backward
           exports.left     = left
           exports.right    = right
+          exports.grab     = grab
           exports.dock     = dock
+  
+          exports.flag     = "flag"
+  
+          exports.square_root = square_root
+          exports.square   = square
+          exports.sin      = sin
+          exports.cos      = cos
+          exports.tan      = tan
+          exports.asin     = asin
+          exports.acos     = acos
+          exports.atan     = atan
 #+END_SRC
 
   This file originally came from an [[http://orgmode.org][org-mode]] file.

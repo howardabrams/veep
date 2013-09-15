@@ -73,18 +73,18 @@ Can you pick up the following flags?
 I've got the first one done already:
 
 #+BEGIN_SRC js
-  rv.connect("3-875E-65297D640A2D")
+  connect "3-875E-65297D640A2D"
 
   # First Flag
-  rv.left( atan(4/3) )
-  rv.forward( square_root( square(3) + square(4) ) )
-  rv.grabFlag()
+  left atan(3/4)
+  forward square_root( square(3) + square(4) )
+  grab flag
 
   # Second Flag
 
   # Third Flag
 
-  rv.dock()
+  dock()
 #+END_SRC
 
 [[file:05-First-Mission.org][Next]]

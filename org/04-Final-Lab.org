@@ -20,18 +20,16 @@ as far as it should. Can you figure out where the marbles are?[fn:2]
 
 
 #+BEGIN_SRC js
-  rv.connect("4-875E-65297D640A2D")
+  connect "4-875E-65297D640A2D"
 
   for x in [1 .. 4]
-      rv.forward(7)
-      rv.left(90)
-
-  rv.dock()
+      forward 7
+      left 90
 #+END_SRC
 
 Do you know /trigonometry/? If you do, you might want to try going
-over to Professor Byrd's lab for a [[file:04x-Trigonometry.org][Big Extra Credit
-Project]]. Otherwise, let's start our [[file:05-First-Mission.org][First Mission]].
+over to Professor Byrd's lab for a [[file:04x-Trigonometry.org][Big Extra Credit Project]].
+Otherwise, let's start our [[file:05-First-Mission.org][First Mission]].
 
 [fn:1] Clearly it will travel 28 meters, since a square has four
 sides and /7 x 4 = 28/.

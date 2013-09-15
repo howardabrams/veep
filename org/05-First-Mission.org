@@ -37,14 +37,12 @@ meters across, since the grade is always pretty small. Looking through the
 *Log* is annoying, do you have any better ideas?[fn:3]
 
 #+BEGIN_SRC js
-  rv.connect("5-75A2-0BB14BD6BC58k")
+  connect "5-75A2-0BB14BD6BC58k"
 
   for dir in [0..360] by 10
-      rv.left(dir)
+      left dir
       g = grade(3)
-      console.log(dir, g)
-
-  rv.dock()
+      console.log dir, g
 #+END_SRC
 
 * Footnotes
@@ -83,7 +81,7 @@ helpful at this time.
 #+BEGIN_EXAMPLE
   for dist in [1..10]
     for dir in [0..360] by 10
-      rv.left(10)  # Turn by 10 more degrees
+      left 10  # Turn by 10 more degrees
       g = grade(dist)
       # ...
 #+END_EXAMPLE

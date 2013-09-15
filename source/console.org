@@ -39,7 +39,7 @@
 
  Easy to evaluate with JavaScript, but how to do that with [[http://coffeescript.org/documentation/docs/browser.html][CoffeeScript]]?
 
-** Log Output
+** Code Wrapping for Logging
 
 #+BEGIN_SRC coffee
   prefixCode = '''
@@ -57,11 +57,15 @@
   '''
   
   postfixCode = '''
+        dock()    # Don't like having veep-rv-1 specific code here.
+
   _results = _execution()
   {
      results: _results[0]
      log: _console_log,
      debug: _results[1]
+     debug2: _results[2]
+     success: _results[3]
   }'''
 #+END_SRC
 
@@ -93,9 +97,12 @@
           "<tr><th>" + render(v).replace(/_/g, " ") + ":</th><td>" + render(k) + "</td></tr>"
   
   render = (o) ->
-          console.log("Rendering:", typeof o, o)
+          # console.log("Rendering:", typeof o, o)
           if _.isArray(o)
-                  "<ul>" + _.map(o, render_list).join("") + "</ul>"
+                  if o.length == 1
+                          "<code>" + o[0] + "</code>"
+                  else
+                          "<ul>" + _.map(o, render_list).join("") + "</ul>"
           else if _.isObject(o)
                   "<table>" + _.map(o, render_row).join("") + "</table>"
           else
@@ -141,7 +148,7 @@
                           panel.append("<code>" + messages[0] + "</code><br/>")
   
                           messages = _.rest(messages)
-                          nextTime = Math.round( Math.random() * 2000 )
+                          nextTime = Math.round( Math.random() * 3000 )
                           if messages.length == 0
                                   nextTime += 3000   # Last message longer.
                           setTimeout(timer, nextTime)
@@ -165,7 +172,7 @@
     # own code, including creating a canvasid variable for the turtlewax.  
     fullcode = prefixCode +
           code.replace(/^|\n/g, "\n   ") + "\n" + postfixCode
-    # console.log("Fullcode:", fullcode)
+    console.log("Fullcode:", fullcode)
     
     try
       results = CoffeeScript.eval(fullcode)
@@ -213,7 +220,7 @@
           if _globs.indexOf(i) != -1
                  _results.push i + " (" + (typeof GLOBAL[i]) + ") = " + GLOBAL[i]
   
-  return _results
+  _results
 #+END_SRC
 
 * Create Editable Cells (Template)
@@ -315,6 +322,11 @@
     /* width: 45%; */
   }
   
+  td.results ul {
+    margin-top: 0;
+    padding-left: 1em;
+  }
+
   .buttons, .buttons2 {
     text-align: right;
     padding: 0px 12px;

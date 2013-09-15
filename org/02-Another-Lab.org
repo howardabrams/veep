@@ -17,8 +17,8 @@ for the wheel engines. Moving forward takes about 1 decabram. Why yes,
 this does make the math easy. Ha ha!
 
 See how far away you can move the RV with that limited amount of energy.
-The =rv.left= and =rv.right= take a number of degrees to turn the
-RV. So saying =rv.left(90)= will tell the RV to turn to the left
+The =left= and =right= take a number of degrees to turn the
+RV. So saying =left 90= will tell the RV to turn to the left
 90°. Make sense?
 
 The easiest option is to go forward 15 meters and turn around 180°,
@@ -31,18 +31,16 @@ it. Change the =_= in this console to a number, but not too large that
 the rover doesn't make it back.[fn:3]
 
 #+BEGIN_SRC js
-  rv.connect("1-875E-65297D640A2D")
-
+  connect "1-875E-65297D640A2D"
+  
   d = _
-  rv.forward(d)
-  rv.left(90)
-  rv.forward(d)
-  rv.left(90)
-  rv.forward(d)
-  rv.left(90)
-  rv.forward(d)
-
-  rv.dock()
+  forward d
+  left 90
+  forward d
+  left 90
+  forward d
+  left 90
+  forward d
 #+END_SRC
 
 To see your work and the path the RV took, click the /Map/ tab.[fn:4] The small
@@ -75,8 +73,8 @@ Which can be something like:
 For a distance of 12 (from /3 + 4 + 5/)
 
 In our case, /a/ will be the trip away from the base station (the
-first =rv.forward=), and /c/ will be the return trip (the last
-=rv.forward=). But how much should we give that second =rv.left= turn?
+first =forward=), and /c/ will be the return trip (the last
+=forward=). But how much should we give that second =left= turn?
 The answer is with a little trigonometry.
 
 #+BEGIN_EXAMPLE
@@ -84,13 +82,14 @@ The answer is with a little trigonometry.
   b = 4
   c = square_root( a*a + b*b )   # = 5
   t = 180 - atan(a/b)
-  console.log("Variable t is", t)
 
-  rv.forward(a)
-  rv.left(90)
-  rv.forward(b)
-  rv.left(t)
-  rv.forward(c)
+  console.log "Variable t is", t
+
+  forward a
+  left 90
+  forward b
+  left t
+  forward c
 #+END_EXAMPLE
 
 [fn:3] Remember that /d * 4/ must be less than /30/, so /7/ is a good number

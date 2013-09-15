@@ -3,6 +3,9 @@
 #+EMAIL:  howard.abrams@gmail.com
 #+DATE:   [2013-09-01 Sun][2013-09-01 Sun]
 
+  - v 1.0.3 - Removed the "rv." library object and parenthesis to
+    simplify the look of the language (Now, it is Logo).  Also, added
+    a trig lab to run around and capture flags.
   - v 1.0.2 - Updated lesson with hints from some play-testing feedback.
   - v 1.0.1 - Finished Chapter 4 and filled a lab full of marbles.
   - v 1.0.0 - Initial release of the software.

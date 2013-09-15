@@ -21,36 +21,34 @@ its base station 10 meters, and then drive backwards 10 meters
 back. This is just to get your feet wet.
 
 Here is a console, and I've already typed the code that makes up the
-mission. Pretty simple since I have a commands called =rv.forward= and
-=rv.backward=:
+mission. Pretty simple since I have a commands called =forward= and
+=backward=:
 
 #+BEGIN_HTML
 <div style="clear:both"></div>
 #+END_HTML
 
 #+BEGIN_SRC js  
-  rv.connect("0-875E-65297D640A2D")
-  rv.forward(4)
-  rv.backward(4)
-  rv.dock()
+  connect "0-875E-65297D640A2D"
+
+  forward 4
+  backward 4
 #+END_SRC
 
 #+RESULTS:
 
-First, you'll notice that everything starts with =rv=. That shows you what I
-made, and I'm pretty proud of it. The first command, =connect= links
-your console with a particular RV. Don't worry about the garbely-gook
-in the quotes, that is just the key to identify a particular RV. That
-one is in a particular lab with a nice, clear floor.
+The first command, =connect= links your console with a particular
+RV. Don't worry about the garbely-gook after the =connect= command,
+that just identifies which RV to send these commands. That one is in a
+particular lab with a nice, clear floor.
 
 We move the RV forward 4 meters, and then backwards 4 meters. Once it
-is done, we have it attach itself back to the base station. If it
-doesn't have that command, it can be communicated and becomes lost.
+is done (if it is close enough), it attaches itself back to the base
+station.   Always end at the base, so that it can re-charge.
 
-In the lab, it isn't so much of a problem, since the technicians
-there, we just pick it up and re-connect it. However, if your RV is
-roving around a dustball around Alpha Centaurii, we have to send a
-new ship through the right worm hole... at least, until the
-government agencies decide that worm hold travel is safe for humans.
+In the lab, it isn't so much of a problem, since the technicians can
+move and re-connect it. However, if your RV is roving around a
+dustball around Alpha Centaurii, we have to send a new ship through
+the right worm hole.
 
 [[file:02-Another-Lab.org][Next]]

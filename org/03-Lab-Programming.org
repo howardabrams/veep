@@ -7,23 +7,22 @@
 That was a lot of typing in that previous console.  This next console
 shows you how to repeat actions, using a command called =for..in=.[fn:1]
 
-In this case, we will /repeat/ moving =rv.forward= and turning to the
-=rv.left=. You just need to replace the =_= with the number of times we
+In this case, we will /repeat/ moving =forward= and turning to the
+=left=. You just need to replace the =_= with the number of times we
 should repeat the loop... that is, =4=.
 
 #+BEGIN_SRC js
-  rv.connect("2-875E-65297D640A2D")
+  connect "2-875E-65297D640A2D"
 
   d = 7
   for c in [1 .. _]
-      rv.forward(d)   # Anything indent like this
-      rv.left(90)     # will be repeated
+      forward d     # Anything indent like this
+      left 90       # will be repeated
 
-  rv.dock()     # Oh, anything after # is ignored
+  # Oh, anything after # is ignored
 #+END_SRC
 
-The two commands that are /indented/ will be done repeatedly, and the
-=rv.dock= command, since it is not indented, is not part of the loop.
+The two commands that are /indented/ will be done repeatedly.
 
 Good job! Would you like some extra credit and make a triangle[fn:2], or
 something even more complicated like a pentagon,[fn:3] or even a
