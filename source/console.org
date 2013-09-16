@@ -6,21 +6,19 @@
 
 * Overview
 
-  I believe I could teach CoffeeScript in an /interactive browser/
-  with stand-alone files (no need for a server, or anything special).
+  This code contains jQuery instructions for turning blocks of code
+  on a web page into an editable text area and executing that code in
+  a context of other functions. The goal being a way to easily try
+  out programming concepts and wrap that up in a game format.
 
-  I could write JavaScript and CoffeeScript lessons in an org-mode
-  file, but create a /shippable/ HTML file (perhaps as a web
-  archive). The process would be little more than /publishing/ and a
-  JavaScript file would do the magic.
-
-
-  We start with Org mode files and use yasnippet to insert HTML with
-  links to JavaScript code.
+  This allows me to write JavaScript or CoffeeScript lessons in an
+  org-mode file, and publish it as an HTML file.
 
 * Snippet for Notebooks
 
-  First, to do CoffeeScript in the browser, do:
+  Each exported file needs to have the following references to
+  CSS, JavaScript, CoffeeScript and other support files (including a
+  reference to this code):
 
 #+BEGIN_SRC html :tangle no
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
@@ -29,17 +27,17 @@
   <link href="styles/console.css" type="text/css" rel="Stylesheet" />
 #+END_SRC
 
+  The easiest way is to have it as part of the org-mode publishing process.
+
 * Cell Evaluation
 
-  We can have three "types":
-
-   * results
-   * console.log? Output from function?
-   * variables
-
- Easy to evaluate with JavaScript, but how to do that with [[http://coffeescript.org/documentation/docs/browser.html][CoffeeScript]]?
+  When the user enters some code, we need to evaluate it in the
+  browser, and render the results that fit the game.
 
 ** Code Wrapping for Logging
+
+   Each code entry that the user types is sandwiched between a
+   =prefix= and =postfix= codes.
 
 #+BEGIN_SRC coffee
   prefixCode = '''
@@ -72,7 +70,8 @@
 ** Enlarge Text Area
 
     While the textarea in Safari and some browsers can be
-    automatically resized, we can't count on it.
+    automatically resized, we can't count on it, so clicking a button
+    will call this function to enlarge the text area.
 
 #+BEGIN_SRC coffee
   enlargeArea = ->
@@ -83,12 +82,13 @@
 
 ** Text Formatting
 
-   Need to be able to take some JavaScript object and render it
-   helpfully. My thought is a recursive function where:
+   When some code is evaluated, we need to take the results (as
+   JavaScript objects and arrays) and render it.  We create a
+   recursive function, =render= that knows how to render:
 
-   - Objects - Tables
-   - Arrays  - Lists
-   - Simple Types - Rendered as strings
+   - Objects as Tables
+   - Arrays as Lists
+   - Simple Types as strings
 
 #+BEGIN_SRC coffee
   render_list = (e) ->
@@ -186,47 +186,14 @@
     # console.log("Results:", results)
 #+END_SRC
 
-** Variable Values
-
-  I would like to show results of any variables defined /by the user/.
-  According to [[http://stackoverflow.com/questions/2051678/getting-all-variables-in-scope][this discussion]], we can get the properties on the
-  =window= object:
-
-#+BEGIN_SRC js :tangle no
-  var a = 1, b = 2, c = 3;
-  for ( var i in window ) { 
-      console.log(i, typeof window[i], window[i]);
-  }
-#+END_SRC
-
-  Of course, this only works in a browser (that defines the =window=
-  variable).
-
-  We would just need to filter every other thing out. Perhaps, we can
-  run it first, and store the variable names, then run it a second
-  time, and compute the difference.
-
-#+BEGIN_SRC coffee :tangle no
-  _globs = []
-  for i in GLOBAL || Window
-      _globs.push(i)
-  
-  _results = []
-  a = 1
-  b = "hello world"
-  c = 42 + a
-  
-  for i in GLOBAL
-          if _globs.indexOf(i) != -1
-                 _results.push i + " (" + (typeof GLOBAL[i]) + ") = " + GLOBAL[i]
-  
-  _results
-#+END_SRC
-
 * Create Editable Cells (Template)
 
   The JS code with jQuery will convert all =<pre>= blocks to editable
-  fields with buttons for evaluation. 
+  fields with buttons for evaluation. We will probably convert this
+  to use a "quasi-real editor", but for now, we'll keep it simple.
+
+  First step, is to have a template that we'll use to substitute each
+  =<pre>= block.
 
 #+BEGIN_SRC coffee :noweb tangle
   template = '''
@@ -259,7 +226,7 @@
     $(".tabs").tabs()
 #+END_SRC
 
-  We really need a /template/ of sorts:
+  This is the /template/ that goes into the =template= variable.
 
 #+NAME: htmltemplate
 #+BEGIN_SRC html :tangle no
@@ -307,6 +274,9 @@
 #+END_SRC
 
 * Styling
+
+  The following is the CSS styles associated with the "console" and
+  text editing... not the game styling.
 
 #+BEGIN_SRC css :tangle ../site/styles/console.css
   table.code {
